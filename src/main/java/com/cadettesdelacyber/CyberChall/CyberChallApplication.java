@@ -9,5 +9,6 @@ public class CyberChallApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CyberChallApplication.class, args);
 	}
+	
 
 }

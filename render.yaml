@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: cyberchall-app
+    plan: free
+    buildCommand: ./mvnw clean install || mvn clean install
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 17

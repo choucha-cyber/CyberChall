@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cadettesdelacyber.CyberChall.models.Admin;
+import com.cadettesdelacyber.CyberChall.models.User;
 import com.cadettesdelacyber.CyberChall.repositories.AdminRepository;
 
 @Service
@@ -27,6 +28,10 @@ public class AdminService {
 
     public void deleteAdmin(Long id) {
         adminRepository.deleteById(id);
+    }
+
+    public User authentifier(String username, String password) {
+        return adminRepository.findByUsernameAndPassword(username, password);
     }
 }
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+
+<body>
+
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+
+<section class="module">
+    <div class="module-content">
+        <h1>Base de Cours : Cyberattaques et Sécurité</h1>
+        <p>Explore les différentes types de cyberattaques et apprends comment te protéger.</p>
+        
+        <h2>1. Qu'est-ce qu'une cyberattaque ?</h2>
+        <p>
+            Une cyberattaque est une tentative malveillante d’endommager, d’accéder illégalement, de voler ou de perturber un système informatique. Les cyberattaques peuvent se présenter sous différentes formes, notamment le phishing, les ransomwares, les attaques DDoS, etc.
+        </p>
+        
+        <h2>2. Types de Cyberattaques</h2>
+        <ul>
+            <li><strong>Phishing :</strong> Tentatives de vol de données personnelles via des emails frauduleux.</li>
+            <li><strong>Ransomware :</strong> Logiciels malveillants qui cryptent vos fichiers et demandent une rançon pour les débloquer.</li>
+            <li><strong>Forces Brutes :</strong> Attaques consistant à essayer toutes les combinaisons possibles pour deviner un mot de passe.</li>
+            <li><strong>Injection SQL :</strong> Injection de commandes malveillantes dans une base de données via des formulaires non sécurisés.</li>
+        </ul>
+        
+        <h2>3. Comment se protéger ?</h2>
+        <ul>
+            <li><strong>Utiliser des mots de passe complexes et différents pour chaque service.</strong></li>
+            <li><strong>Activer l’authentification à deux facteurs (2FA) quand c’est possible.</strong></li>
+            <li><strong>Installer des logiciels antivirus et pare-feu.</strong></li>
+            <li><strong>Ne jamais cliquer sur des liens ou télécharger des fichiers d’une source inconnue.</strong></li>
+        </ul>
+
+        <div class="buttons">
+            <a th:href="@{/admin/accueil-admin}" class="btn">Retour aux modules</a>
+            <a th:href="@{/quiz-cyberattaque}" class="btn">Commencer le Quizz</a>
+            <a th:href="@{/challenge-motdepasse}" class="btn">Mini-challenge : Trouve le mot de passe</a>
+            
+        </div>
+    </div>
+</section>
+
+
+    <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+    
+
+</body>
+</html>

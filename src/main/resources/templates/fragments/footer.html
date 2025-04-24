@@ -1,16 +1,15 @@
+<!-- fragments/footer.html -->
 <div th:fragment="footer">
-	<footer>
-		<img src="images/logo_cadettes.png" alt="Les Cadettes de la Cyber"
-			style="height: 40px;">
-		<p>&copy; 2025 - CyberChall. Cadettes de la Cyber - Tous droits réservés.</p>
-	</footer>
+    <footer>
+        <img src="/images/logo_cadettes.png" alt="Les Cadettes de la Cyber" style="height: 40px;">
+        <p>&copy; 2025 - CyberChall. Cadettes de la Cyber - Tous droits réservés.</p>
+    </footer>
 
-	<script>
+    <script>
         function toggleMode() {
             const body = document.body;
             body.classList.toggle("light-mode");
 
-            // Sauvegarde du mode dans localStorage
             if (body.classList.contains("light-mode")) {
                 localStorage.setItem("theme", "light");
             } else {
@@ -18,38 +17,21 @@
             }
         }
 
-        // Charger le mode préféré de l'utilisateur
         window.onload = () => {
             const savedTheme = localStorage.getItem("theme");
             if (savedTheme === "light") {
                 document.body.classList.add("light-mode");
             }
-        };
-        
-     // Chonnexion utilisateur
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('error-msg');
-    
-            if (username === 'cadette' && password === '123') {
-                window.location.href = 'accueil_cadette.html';
-            } else {
-                errorMsg.style.display = 'block';
+
+            const themeStatus = document.getElementById('theme-status');
+            if (themeStatus && savedTheme === 'light') {
+                themeStatus.textContent = "Clair";
             }
-        });
-        
-        //Déconnexion account
+        };
+
         function logout() {
             alert("Déconnexion réussie.");
             window.location.href = "connexion.html";
-        }
-        
-     // Mise à jour du thème affiché
-        const themeStatus = document.getElementById('theme-status');
-        if (localStorage.getItem('theme') === 'light') {
-            themeStatus.textContent = "Clair";
         }
 
         function revokeLink(btn) {
@@ -57,19 +39,15 @@
                 btn.parentElement.remove();
             }
         }
-        
+
         function updateSelection() {
             const checkboxes = document.querySelectorAll('.module input[type="checkbox"]');
             const selected = Array.from(checkboxes).filter(checkbox => checkbox.checked);
 
             const validateBtn = document.querySelector('.validate-btn');
-            
-            if (selected.length >= 2 && selected.length <= 4) {
-                validateBtn.style.display = 'block';
-                validateBtn.disabled = false;
-            } else {
-                validateBtn.style.display = 'none';
-                validateBtn.disabled = true;
+            if (validateBtn) {
+                validateBtn.style.display = (selected.length >= 2 && selected.length <= 4) ? 'block' : 'none';
+                validateBtn.disabled = !(selected.length >= 2 && selected.length <= 4);
             }
         }
 
@@ -82,14 +60,28 @@
 
             const linkContainer = document.querySelector('.link-container');
             const sessionLink = document.getElementById('session-link');
-            
-            sessionLink.href = `https://challenges.html?modules=${selectedModules}`;
-            sessionLink.innerText = `https://challenges.html?modules=${selectedModules}`;
-            
-            linkContainer.style.display = 'block';
-        }
-    </script>
-	</body>
-	</html>
 
+            if (sessionLink && linkContainer) {
+                sessionLink.href = `https://challenges.html?modules=${selectedModules}`;
+                sessionLink.innerText = `https://challenges.html?modules=${selectedModules}`;
+                linkContainer.style.display = 'block';
+            }
+        }
+
+        function copyToClipboard(button) {
+            const input = button.closest("tr").querySelector("input");
+            input.select();
+            document.execCommand("copy");
+            alert("Lien copié !");
+        }
+        
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+    </script>
+	<script src="/js/quiz-cyberattaques.js"></script>
 </div>

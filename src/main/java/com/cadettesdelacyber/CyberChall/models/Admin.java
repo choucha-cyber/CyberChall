@@ -1,23 +1,23 @@
 package com.cadettesdelacyber.CyberChall.models;
 
-import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type_admin")
-	public abstract class Admin {
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+public class Admin extends User {
 
-	    private String nom;
-	    private String email;
+    // Constructeur par défaut (requis par JPA)
+    public Admin() {
+        super();
+        this.setRole("admin");
+    }
 
+    // Constructeur pratique pour l'authentification
+    public Admin(String username, String password) {
+        super(username, password);
+        this.setRole("admin");
+    }
 
 }

@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.cadettesdelacyber.CyberChall.models.Admin;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {}
+public interface AdminRepository extends JpaRepository<Admin, Long> {
+	Admin findByUsernameAndPassword(String username, String password);
+}
 

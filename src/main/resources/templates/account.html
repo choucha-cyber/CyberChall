@@ -1,46 +1,43 @@
-<!-- Inclusion du header -->
-    <div th:insert="fragments/header :: header"></div>
-    <h1>👤 Mon compte</h1>
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-    <div class="account-container">
+<div th:insert="~{fragments/header :: header}"></div>
 
-        <div class="section">
-            <h2>Pseudo</h2>
-            <p>Cadette</p>
-        </div>
+<body>
 
-        <div class="section">
-            <h2>Mes sessions créées</h2>
-            <ul id="session-list">
-                <li>
-                    <a class="session-link" href="https://challenges.html?modules=protection-reseaux" target="_blank">https://challenges.html?modules=protection-reseaux</a>
-                    <button class="revoke-btn" onclick="revokeLink(this)">Révoquer</button>
-                </li>
-                <li>
-                    <a class="session-link" href="https://challenges.html?modules=securite-cyberattaques" target="_blank">https://challenges.html?modules=securite-cyberattaques</a>
-                    <button class="revoke-btn" onclick="revokeLink(this)">Révoquer</button>
-                </li>
-            </ul>
-            
-        </div>
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+	<h1>👤 Mon compte</h1>
+	<p>
+		Bienvenue, <span th:text="${username}">Utilisateur</span>!
+	</p>
+	<p>
+		Votre rôle est : <span th:text="${role}">Utilisateur</span>
+	</p>
 
-        <div class="section">
-            <h2>Paramètres du compte</h2>
-            <button onclick="alert('Fonction à venir')">Changer mon mot de passe</button>
-        </div>
 
-        <div class="section">
-            <h2>Autres infos</h2>
-            <p class="info-line">🕓 Dernière connexion : il y a 2 jours</p>
-            <p class="info-line">📊 Sessions créées : 2</p>
-            <p class="info-line">🎨 Thème actif : <span id="theme-status">Sombre</span></p>
-        </div>
+	<div class="account-container">
+		<div class="section">
+			<h2>Mes sessions</h2>
+			<ul id="session-list">
+				<!-- Affichage des sessions récupérées -->
+				<li th:each="session : ${sessions}">
+					<div>
+						<strong>Token : </strong><span th:text="${session.token}"></span><br>
+						<strong>Role : </strong><span th:text="${session.role}"></span><br>
+						<strong>Début : </strong><span
+							th:text="${#dates.format(session.startDate, 'yyyy-MM-dd HH:mm')}"></span><br>
+						<strong>Expiration : </strong><span
+							th:text="${#dates.format(session.expirationDate, 'yyyy-MM-dd HH:mm')}"></span><br>
+					</div>
+				</li>
 
-        <div class="section" style="text-align: center;">
-            <button onclick="logout()">Se déconnecter</button>
-        </div>
-    </div>
+			</ul>
+		</div>
+	</div>
 
- <!-- Inclusion du footer -->
-    <div th:insert="fragments/footer :: footer"></div>
-    
+    <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

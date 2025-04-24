@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+
+<body>
+
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+
+
+<section class="module module-securite">
+	<div class="module-content">
+		<h1>Sécurité des appareils et connexions</h1>
+		<p>Explore les bases et relève des défis pour tester tes
+			compétences en cybersécurité.</p>
+		<div class="buttons">
+			<a th:href="@{/base}" class="btn">Base</a>		
+			<a th:href="@{/quiz-cyberattaque}" class="btn">Quizz</a>
+			
+		</div>
+	</div>
+</section>
+
+    <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

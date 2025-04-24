@@ -1,11 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-    <!-- Inclusion du header -->
-    <div th:insert="fragments/header :: header"></div>
+<div th:insert="~{fragments/header :: header}"></div>
 
+<body>
+
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+
+    <!-- CONTENU PRINCIPAL -->
     <main class="hero">
-        <!-- Inclusion du header -->
-    <div th:insert="admin/accueil_admin"></div>
+        <div class="login-container">
+            <a th:href="@{/admin/connexion-admin}" class="btn btn-admin">Connexion Admin</a>
+            <a th:href="@{/eleve/connexion-eleve}" class="btn btn-student">Connexion Élève</a>
+            <!-- pour créer un compte -->
+            <a th:href="@{/create-account}" class="btn btn-create-account">Créer un compte</a>
+        </div>
     </main>
 
-    <!-- Inclusion du footer -->
-    <div th:insert="fragments/footer :: footer"></div>
+    <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

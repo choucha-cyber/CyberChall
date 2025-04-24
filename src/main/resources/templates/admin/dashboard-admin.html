@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+
+<body>
+
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+    <h1>Bienvenue sur le Dashboard Administrateur</h1>
+
+    <!-- Message d’accueil personnalisé si besoin -->
+    <p th:text="'Bonjour ' + ${admin.nom} + ' 👋'">Bonjour Admin 👋</p>
+
+    <nav>
+        <ul>
+            <li><a th:href="@{/session/creation}">Créer une session</a></li>
+            <li><a th:href="@{/session/statistics}">Voir les statistiques</a></li>
+            <li><a th:href="@{/challenges}">Voir les défis</a></li>
+            <li><a th:href="@{/eleves/liste}">Liste des élèves</a></li>
+            <li><a th:href="@{/logout}">Se déconnecter</a></li>
+        </ul>
+    </nav>
+    
+ <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>

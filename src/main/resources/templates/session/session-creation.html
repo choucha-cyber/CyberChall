@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<body>
+
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+
+
+<div class="session-container create">
+    <h2>Préparez votre session</h2>
+
+    <label>Titre :
+        <input type="text" id="titre" required />
+    </label>
+
+    <label>Description :
+        <input type="text" id="description" required />
+    </label>
+
+    <!-- Modules -->
+    <p>Sélectionnez <b>2 à 4</b> modules :</p>
+    <div class="module">
+        <input type="checkbox" value="protection" onclick="updateSelection()"> Protection des données
+    </div>
+    <div class="module">
+        <input type="checkbox" value="reseaux" onclick="updateSelection()"> Réseaux sociaux
+    </div>
+    <div class="module">
+        <input type="checkbox" value="securite" onclick="updateSelection()"> Sécurité des appareils
+    </div>
+    <div class="module">
+        <input type="checkbox" value="cyberattaques" onclick="updateSelection()"> Cyberattaques
+    </div>
+
+    <!-- Utilisateur connecté -->
+    <input type="hidden" id="userId" th:value="${user.id}" />
+
+    <button class="validate-btn" onclick="generateLink()" disabled>Valider</button>
+
+    <div class="link-container">
+        <p>Votre lien : <a id="session-link" href="#" target="_blank"></a></p>
+    </div>
+</div>
+
+<script>
+    let selectedModules = [];
+
+    function updateSelection() {
+        selectedModules = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+            .map(cb => cb.value);
+
+        const btn = document.querySelector('.validate-btn');
+        btn.disabled = !(selectedModules.length >= 2 && selectedModules.length <= 4);
+    }
+
+    function generateLink() {
+        const titre = document.getElementById("titre").value;
+        const description = document.getElementById("description").value;
+        const userId = document.getElementById("userId").value;
+
+        fetch('/session/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ titre, description, modules: selectedModules.join(','), userId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("session-link").href = "/challenge/" + data.id;
+            document.getElementById("session-link").textContent = "Lien généré";
+        })
+        .catch(err => console.error('Erreur création session :', err));
+    }
+</script>
+
+ <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

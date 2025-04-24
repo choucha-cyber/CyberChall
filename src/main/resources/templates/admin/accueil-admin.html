@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<body>
+	<!-- NAVIGATION depuis le fragment nav -->
+	<div th:insert="~{fragments/nav :: nav}"></div>
+
+	<!-- CONTENU PRINCIPAL -->
+	<main class="hero">
+
+		<section class="accueil-admin">
+			<div th:if="${success}" class="alert alert-success" role="alert">
+				<span th:text="${success}"></span>
+			</div>
+			<h2>
+				Bienvenue <span style="color: #f37500;">Cadette</span>
+			</h2>
+			<div class="modules">
+				<div class="card">
+					<a th:href="@{/module-protection}">1 Protection des données et
+						vie privée</a>
+				</div>
+				<div class="card">
+					<a th:href="@{/module-reseaux}">2 Réseaux sociaux et influence
+						numérique</a>
+				</div>
+				<div class="card">
+					<a th:href="@{/module-securite}">3️ Sécurité des appareils et
+						connexions</a>
+				</div>
+				<div class="card">
+					<a th:href="@{/module-cyberattaque}">4 Cyberattaques et menaces
+						courantes</a>
+				</div>
+			</div>
+		</section>
+
+	</main>
+	<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

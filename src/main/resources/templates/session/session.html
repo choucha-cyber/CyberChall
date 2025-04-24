@@ -1,38 +1,81 @@
-<!-- Inclusion du header -->
-    <div th:insert="fragments/header :: header"></div>
-    <h1>Sessions</h1>
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-    <div class="session-container">
+<div th:insert="~{fragments/header :: header}"></div>
 
-        <div class="section">
-            <h2>Créer une session</h2>
-            <button><a th:href="@{/session_creation}">➕ Nouvelle session</a></button>
+<body>
+
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
+
+    <div class="session-container create">
+        <h2>Préparez votre session</h2>
+        <p>Sélectionnez <b>2 à 4</b> modules pour générer un lien :</p>
+        
+        <div class="module">
+            <input type="checkbox" value="protection" onclick="updateSelection()"> 
+            Protection des données et vie privée
+        </div>
+        
+        <div class="module">
+            <input type="checkbox" value="reseaux" onclick="updateSelection()"> 
+            Réseaux sociaux et influence numérique
         </div>
 
-        <div class="section">
-            <h2>Mes sessions créées</h2>
-            <ul id="session-list">
-                <li>
-                    <a class="session-link" href="https://challenges.html?modules=protection-reseaux" target="_blank">https://challenges.html?modules=protection-reseaux</a>
-                    <button class="stats-btn" onclick="window.location.href='session_statistic.html'">Statistiques</button>
-                    <button class="revoke-btn" onclick="revokeLink(this)">Révoquer</button>
-                </li>
-                
-                <li>
-                    <a class="session-link" href="https://challenges.html?modules=securite-cyberattaques" target="_blank">https://challenges.html?modules=securite-cyberattaques</a>
-                    <button class="stats-btn" onclick="window.location.href='session_statistic.html'">Statistiques</button>
-                    <button class="revoke-btn" onclick="revokeLink(this)">Révoquer</button>
-                </li>
-            </ul>
-            
+        <div class="module">
+            <input type="checkbox" value="securite" onclick="updateSelection()"> 
+            Sécurité des appareils et connexions
         </div>
 
-        <div class="section">
-            <h2>Autres infos</h2>
-            <p class="info-line">📊 Sessions créées : 2</p>
+        <div class="module">
+            <input type="checkbox" value="cyberattaques" onclick="updateSelection()"> 
+            Cyberattaques et menaces courantes
         </div>
 
+        <button class="validate-btn" onclick="generateLink()" disabled>Valider</button>
+
+        <div class="link-container">
+            <p>Votre lien de session : <a id="session-link" href="#" target="_blank"></a></p>
+        </div>
     </div>
+    
+    <script>
+let selectedModules = [];
 
-    <!-- Inclusion du footer -->
-    <div th:insert="fragments/footer :: footer"></div>
+function updateSelection() {
+    selectedModules = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+    const btn = document.querySelector('.validate-btn');
+    btn.disabled = !(selectedModules.length >= 2 && selectedModules.length <= 4);
+}
+
+function generateLink() {
+    const link = "https://challenges.html?modules=" + selectedModules.join(',');
+    const aTag = document.getElementById("session-link");
+    aTag.href = link;
+    aTag.textContent = link;
+
+ // Envoi au serveur
+    fetch('/sessions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ modules: selectedModules })
+    })
+    .then(res => res.json())
+    .then(data => {
+    console.log('Session enregistrée:', data);
+    window.location.href = "/session/session";  // redirige vers la page qui liste les sessions
+})
+
+    .catch(err => console.error('Erreur lors de la sauvegarde:', err));
+}
+</script>
+
+ <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

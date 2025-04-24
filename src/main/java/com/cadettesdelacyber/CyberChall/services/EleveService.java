@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cadettesdelacyber.CyberChall.models.Eleve;
+import com.cadettesdelacyber.CyberChall.models.User;
 import com.cadettesdelacyber.CyberChall.repositories.EleveRepository;
 
 @Service
@@ -27,6 +28,10 @@ public class EleveService {
 
     public void deleteEleve(Long id) {
         eleveRepository.deleteById(id);
+    }
+    
+    public User authentifier(String username, String password) {
+        return eleveRepository.findByUsernameAndPassword(username, password);
     }
 }
 

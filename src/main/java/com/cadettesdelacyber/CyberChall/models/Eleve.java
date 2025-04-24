@@ -1,26 +1,32 @@
 package com.cadettesdelacyber.CyberChall.models;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 
 @Entity
-public class Eleve {
+public class Eleve extends User {
 
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+    private String niveau;     // Ex: 5ème, 3ème, etc.
 
-	    private String nom;
-	    private String prenom;
-	    private String email;
+    // Constructeur par défaut (requis par JPA)
+    public Eleve() {
+        super();
+        this.setRole("eleve");
+    }
 
-	    // Relation avec les sessions
-	    @ManyToMany(mappedBy = "eleves")
-	    private List<Session> sessions;
+    // Constructeur pratique pour l'authentification
+    public Eleve(String username, String password) {
+        super(username, password);
+        this.setRole("eleve");
+    }
 
+    public String getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(String niveau) {
+        this.niveau = niveau;
+    }
 }

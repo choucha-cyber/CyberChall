@@ -1,53 +1,77 @@
-<div class="challenge-card" style="font-family: Arial, sans-serif; border: 1px solid #ccc; border-radius: 12px; padding: 20px; max-width: 700px; background-color: #f9f9f9;">
-  <h2 style="color: #3b82f6;">🔐 FICHE CHALLENGE</h2>
-  <h3 style="margin-top: 0;">Thème 3 : Sécurité des appareils et connexions</h3>
-  <p><strong>🎯 Objectif :</strong> Identifier et corriger les failles de sécurité d’un appareil numérique (ordinateur ou smartphone).</p>
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-  <hr>
+<div th:insert="~{fragments/header :: header}"></div>
 
-  <h3>🕵️‍♂️ Mission : Sécurité Numérique</h3>
-  <p>Tu es recruté(e) par <strong>TechSecure Corp</strong>, une entreprise victime d'incidents de sécurité.<br>
-  Ta mission : <strong>auditer un appareil</strong> et proposer des solutions pour le sécuriser.</p>
+<body>
 
-  <hr>
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
 
-  <h3>🔍 Étapes du challenge</h3>
-  <ol>
-    <li><strong>Découverte</strong><br>
-        ➤ Analyse le contexte (attaques subies, type d’appareil utilisé).
-    </li>
-    <li><strong>Inspection</strong><br>
-        ➤ Repère les failles :
-        <ul>
-          <li>Système non à jour ?</li>
-          <li>Applis obsolètes ?</li>
-          <li>Mots de passe trop faibles ?</li>
-          <li>Connexions non sécurisées ?</li>
-        </ul>
-    </li>
-    <li><strong>Solutions</strong><br>
-        ➤ Propose des mesures :
-        <ul>
-          <li>✅ Mises à jour</li>
-          <li>✅ VPN</li>
-          <li>✅ Authentification à 2 facteurs</li>
-          <li>✅ Mots de passe solides</li>
-          <li>✅ Paramètres de sécurité renforcés</li>
-        </ul>
-    </li>
-    <li><strong>Débriefing</strong><br>
-        ➤ Présente tes recommandations à ton équipe pour partager les bonnes pratiques !
-    </li>
-  </ol>
+    <section class="module">
+        <div class="module-content">
+            <h1>Sécurité des appareils et connexions</h1>
+            <p><strong>🎯 Objectif :</strong> Identifier et corriger les failles de sécurité d’un appareil numérique (ordinateur ou smartphone).</p>
 
-  <hr>
+            <hr>
 
-  <h3>🧰 Tu auras à disposition :</h3>
-  <ul>
-    <li>Fiches appareils 📱💻</li>
-    <li>Guides pratiques 🧠</li>
-    <li>Visuels explicatifs 🖼️</li>
-  </ul>
+            <h2>🕵️‍♂️ Mission : Sécurité Numérique</h2>
+            <p>Tu es recruté(e) par <strong>TechSecure Corp</strong>, une entreprise victime d'incidents de sécurité.<br>
+            Ta mission : <strong>auditer un appareil</strong> et proposer des solutions pour le sécuriser.</p>
 
-  <p style="font-style: italic; color: #555;">🎮 Un défi inspiré des mécaniques de la plateforme Gardey, pour apprendre en jouant !</p>
-</div>
+            <hr>
+
+            <h3>🔍 Étapes du challenge</h3>
+            <ol>
+                <li><strong>Découverte</strong><br>
+                    ➤ Analyse le contexte (attaques subies, type d’appareil utilisé).
+                </li>
+                <li><strong>Inspection</strong><br>
+                    ➤ Repère les failles :
+                    <ul>
+                        <li>Système non à jour ?</li>
+                        <li>Applis obsolètes ?</li>
+                        <li>Mots de passe trop faibles ?</li>
+                        <li>Connexions non sécurisées ?</li>
+                    </ul>
+                </li>
+                <li><strong>Solutions</strong><br>
+                    ➤ Propose des mesures :
+                    <ul>
+                        <li>✅ Mises à jour</li>
+                        <li>✅ VPN</li>
+                        <li>✅ Authentification à 2 facteurs</li>
+                        <li>✅ Mots de passe solides</li>
+                        <li>✅ Paramètres de sécurité renforcés</li>
+                    </ul>
+                </li>
+                <li><strong>Débriefing</strong><br>
+                    ➤ Présente tes recommandations à ton équipe pour partager les bonnes pratiques !
+                </li>
+            </ol>
+
+            <hr>
+
+            <h3>🧰 Tu auras à disposition :</h3>
+            <ul>
+                <li>Fiches appareils 📱💻</li>
+                <li>Guides pratiques 🧠</li>
+                <li>Visuels explicatifs 🖼️</li>
+            </ul>
+
+            <p>🎮 Un défi inspiré des mécaniques de la plateforme Gardey, pour apprendre en jouant !</p>
+
+            <div class="buttons">
+            <a th:href="@{/admin/accueil-admin}" class="btn">Retour aux modules</a>
+            <a th:href="@{/quiz-securite}" class="btn">Commencer le Quizz</a>
+            <a th:href="@{/challenge-motdepasse}" class="btn">Mini-challenge : Trouve le mot de passe</a>
+            
+        </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

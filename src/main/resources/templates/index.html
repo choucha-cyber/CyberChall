@@ -5,21 +5,29 @@
 
 <body>
 
-    <!-- NAVIGATION depuis le fragment nav -->
-    <div th:insert="~{fragments/nav :: nav}"></div>
+	<!-- NAVIGATION depuis le fragment nav -->
+	<div th:insert="~{fragments/nav :: nav}"></div>
 
-    <!-- CONTENU PRINCIPAL -->
-    <main class="hero">
-        <div class="login-container">
-            <a th:href="@{/admin/connexion-admin}" class="btn btn-admin">Connexion Admin</a>
-            <a th:href="@{/eleve/connexion-eleve}" class="btn btn-student">Connexion Élève</a>
-            <!-- pour créer un compte -->
-            <a th:href="@{/create-account}" class="btn btn-create-account">Créer un compte</a>
-        </div>
-    </main>
+	<!-- Message de déconnexion -->
+	<div th:if="${message}" class="alert alert-success">
+		<p th:text="${message}"></p>
+	</div>
 
-    <!-- FOOTER -->
-    <div th:insert="~{fragments/footer :: footer}"></div>
+
+
+
+	<!-- CONTENU PRINCIPAL -->
+	<main class="hero">
+		<div class="login-container">
+			<a th:href="@{/admin/connexion-admin}" class="btn btn-admin">Connexion</a>
+			<!-- pour créer un compte -->
+			<a th:href="@{/create-account}" id="create-account">Créer
+				un compte</a>
+		</div>
+	</main>
+
+	<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

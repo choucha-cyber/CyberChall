@@ -144,7 +144,7 @@ nav {
 }
 
 .logo img {
-    width: 50px; /* Taille du logo */
+    width: 7rem; /* Taille du logo */
     height: auto;
     margin-right: 1rem; /* Espacement entre l'image et le titre */
 }
@@ -306,3 +306,125 @@ button  a {
 button:hover {
     background-color: #ff8c1a;
 }
+
+#create-account {
+	text-decoration: none;
+}
+
+
+/************************ NAV ****************************/
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 180px;
+  border: none;
+  list-style: none;         /* 🔹 Retire les puces */
+  font-size: 0.875rem;      /* 🔹 Réduit la taille du texte (équivalent à 14px environ) */
+  padding: 0; 
+  background-color: transparent;  /* 🔹 Fond transparent */
+  border: none;                   /* 🔹 Supprime les bordures */
+  box-shadow: none; 
+}
+
+.nav-item:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu .dropdown-item {
+  white-space: nowrap;
+  font-size: 0.875rem;      /* 🔹 S'assure que chaque item garde la taille réduite */
+  padding: 0.5rem 1rem;
+  background-color: transparent;  /* 🔹 Pas de fond au survol par défaut */
+  color: white; 
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);  /* Léger fond au hover */
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/********************RESPONSIVE : MENU BURGER*********************/
+.burger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.burger span {
+  height: 3px;
+  width: 25px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Responsive rules */
+@media screen and (max-width: 768px) {
+  .burger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #212529;
+    display: none;
+    gap: 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    text-align: center;
+    padding: 1rem 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dropdown-menu {
+    position: static;  /* 🛠️ Plus de position absolue en mobile */
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+    display: none;      /* On cache par défaut */
+    padding-left: 0;
+  }
+
+  .nav-item.dropdown:hover .dropdown-menu {
+    display: block;     /* Affiche au survol ou clic */
+  }
+
+  .dropdown-item {
+    text-align: center; /* Centre les liens */
+  }
+}
+
+

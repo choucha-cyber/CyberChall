@@ -8,4 +8,8 @@ import com.cadettesdelacyber.CyberChall.models.SousModule;
 @Repository
 public interface SousModuleRepository extends JpaRepository<SousModule, Long> {
     // Tu peux ajouter des méthodes personnalisées ici si besoin
+	boolean existsByTitreAndModule_Id(String titre, Long moduleId);
+
+
+
 }

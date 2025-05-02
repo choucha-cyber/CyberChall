@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 /*   Cette méthode dans la classe GlobalVariablesController 
  * sert à injecter automatiquement certaines variables 
  * dans tous les modèles (Model) de toutes les vues Thymeleaf de ton application, 
- * sans avoir à les redéfinir à chaque fois dans chaque contrôleu  */
+ * sans avoir à les redéfinir à chaque fois dans chaque contrôleur  */
 @ControllerAdvice
 public class GlobalVariablesController {
 

@@ -32,7 +32,6 @@ public class SousModule {
 	private List<Session> sessions;
 
 	//lien de redirection vers le sous-module en particulier (page de détails : base + quizz)
-	@JoinColumn(name = "link")
     private String link;
 	
 	//Foreign Key to Cours

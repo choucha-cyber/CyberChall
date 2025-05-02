@@ -39,7 +39,7 @@
         <!-- Slide des sous-modules -->
         <div class="absolute inset-0 bg-white flex gap-3 p-4 overflow-x-auto transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out z-20">
             <div th:each="sm : ${module.sousModules}" class="min-w-[120px] bg-blue-100 rounded-md p-2 text-center shadow">
-                <span th:text="${sm.nom}">Sous-module</span>
+                <span th:text="${sm.titre}">Sous-module</span>
             </div>
         </div>
     </div>

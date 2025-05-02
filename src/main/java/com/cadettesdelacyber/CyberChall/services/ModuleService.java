@@ -3,6 +3,8 @@ package com.cadettesdelacyber.CyberChall.services;
 import com.cadettesdelacyber.CyberChall.models.Module;
 import com.cadettesdelacyber.CyberChall.models.SousModule;
 import com.cadettesdelacyber.CyberChall.repositories.ModuleRepository;
+import com.cadettesdelacyber.CyberChall.repositories.SousModuleRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class ModuleService {
 	
 	@Autowired
     private ModuleRepository moduleRepository;
+	
+	@Autowired
+    private SousModuleRepository sousModuleRepository;
 	
 	public void removeSousModuleByIndex(Long moduleId, int index) {
 	    Optional<Module> optionalModule = moduleRepository.findById(moduleId);
@@ -70,4 +75,8 @@ public class ModuleService {
         moduleRepository.deleteById(id);
     } 
     
+    public Module findByNom(String nom) {
+        return moduleRepository.findByNom(nom).orElse(null);
+    }
+
 }

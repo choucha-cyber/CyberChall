@@ -51,14 +51,20 @@ header nav ul li a:hover {
 }
 
 /* ---- Section Hero ---- */
-.hero {
+/* .hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 2rem 5%;
     min-height: 70vh;
     transition: background 0.5s ease;
+} */
+.hero {
+    padding: 2rem 5%;
+    min-height: 70vh;
+    transition: background 0.5s ease;
 }
+
 
 .hero-image {
     flex: 1 1 40%;
@@ -234,13 +240,18 @@ nav h1 a {
 
 
 /* ---- 📌 Style des cartes ---- */
-.modules {
+/*.modules {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
     padding: 2rem;
+} */
+
+.modules {
+    padding: 2rem;
 }
+
 
 .card {
     width: 250px;

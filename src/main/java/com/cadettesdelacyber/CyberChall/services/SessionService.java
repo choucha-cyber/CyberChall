@@ -1,112 +1,111 @@
 package com.cadettesdelacyber.CyberChall.services;
 
+import com.cadettesdelacyber.CyberChall.models.Admin;
+import com.cadettesdelacyber.CyberChall.models.Session;
+import com.cadettesdelacyber.CyberChall.models.SousModule;
+import com.cadettesdelacyber.CyberChall.repositories.AdminRepository;
+import com.cadettesdelacyber.CyberChall.repositories.SessionRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import com.cadettesdelacyber.CyberChall.models.Session;
-import com.cadettesdelacyber.CyberChall.models.User;
-import com.cadettesdelacyber.CyberChall.repositories.SessionRepository;
-import com.cadettesdelacyber.CyberChall.repositories.UserRepository;
-
-import jakarta.servlet.http.HttpServletRequest;
-
 @Service
 public class SessionService {
 
+	@Autowired
+	private SessionRepository sessionRepository;
+	
+	 public SessionService(SessionRepository sessionRepository) {
+	        this.sessionRepository = sessionRepository;
+	    }
+
     @Autowired
-    private SessionRepository sessionRepo; // Le repository Session
+    private AdminRepository adminRepository;
     
     @Autowired
-    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
     
 
-    // Méthode pour trouver toutes les sessions d'un utilisateur
-    public List<Session> findSessionsByUser(User user) {
-        return sessionRepo.findByUser(user);  // Utilise la méthode du repository pour récupérer les sessions
+    public void save(Session session) {
+        sessionRepository.save(session);
     }
-    
-    // Authentifier l'utilisateur en fonction de son nom d'utilisateur, mot de passe et rôle
-    public boolean authenticate(String username, String password, String role) {
-        // Chercher l'utilisateur par son nom et son rôle
-        User user = userRepository.findByUsernameAndRole(username, role);
+   
 
-        // Si l'utilisateur existe et que le mot de passe est correct
-        if (user != null && user.getPassword().equals(password)) {
-            return true; // Connexion réussie
+    // === Authentification ===
+    public boolean authenticate(String username, String password) {
+        Admin admin = adminRepository.findByUsername(username); // Recherche de l'admin en base
+        if (admin != null) {
+            return passwordEncoder.matches(password, admin.getPassword()); // Comparaison du mot de passe en clair avec celui encodé
         }
-        return false; // Si l'utilisateur n'existe pas ou si le mot de passe est incorrect
+        return false; // L'admin n'existe pas ou le mot de passe est incorrect
     }
 
     // === Créer une session ===
- // Dans le Service
-    public Session createSession(String titre, String description, String modules, User admin) {
-        // Crée une session avec les bons paramètres
-        Session session = new Session(titre, description, modules, admin);
-        return sessionRepo.save(session);  // Sauvegarde la session dans la base de données
+    @Transactional
+    public Session createSession(LocalDate dateDebut, int duree, String token, List<SousModule> sousModules, Admin admin) {
+        Session session = new Session();
+        session.setDateDebut(dateDebut);
+        session.setDateDebutFormatted(dateDebut.toString());
+        session.setDuree(duree);
+        session.setToken(token);
+        session.setSousModules(sousModules);
+        session.setAdmin(admin);
+
+        // ❗ SAUVEGARDE EN BASE
+        return sessionRepository.save(session);
+    }
+
+    public List<Session> findByAdmin(Admin admin) {
+        return sessionRepository.findByAdmin(admin);
     }
 
 
-    // === Obtenir toutes les sessions d'un admin ===
-    public List<Session> getSessionsByUser(User admin) {
-        return sessionRepo.findByUser(admin);  // Trouver toutes les sessions d'un utilisateur (admin)
-    }
 
-    // === Générer un lien unique (token) pour chaque session ===
-    public String generateToken() {
-        return UUID.randomUUID().toString();  // Token unique pour chaque session
-    }
-
-    // === Lister les sessions créées dans le mois dernier ===
-    public List<Session> getSessionsFromLastMonth(User admin) {
-        LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
-        return sessionRepo.findByUserAndDateDebutAfter(admin, oneMonthAgo);  // Sessions de l'admin dans le dernier mois
+    // === Récupérer les sessions liées à un admin ===
+    public List<Session> getSessionsByAdmin(Admin admin) {
+        return sessionRepository.findByAdmin(admin);
     }
 
     // === Statistiques ===
     public long countAllSessions() {
-        return sessionRepo.count();  // Nombre total de sessions
+        return sessionRepository.count();
     }
 
-    public long countActiveSessions() {
-        return sessionRepo.countByDateFinAfter(LocalDate.now());  // Nombre de sessions actives
+    // === Génération de token ===
+    public String generateToken() {
+        return UUID.randomUUID().toString();
     }
 
-    // === Pour l'affichage sur /account ===
-    public List<Session> getSessionsForAccountPage(User user) {
-        return sessionRepo.findByUser(user);  // Lister les sessions liées à un utilisateur donné
-    }
-    
-    
- // Méthode pour obtenir le rôle à partir du token
+    // === Extraction d'infos depuis le cookie session ===
     public String getRoleByToken(HttpServletRequest request) {
-        // Recherche du cookie "SESSION_TOKEN" et récupération du rôle associé
         String token = extractSessionToken(request);
         if (token != null) {
-            // Ici, tu pourrais stocker les informations de rôle dans la session HTTP, par exemple
-            return (String) request.getSession().getAttribute("role");  // Exemple : le rôle est stocké dans la session
+            return (String) request.getSession().getAttribute("role");
         }
         return null;
     }
 
-    // Méthode pour obtenir le username à partir du token
     public String getUsernameByToken(HttpServletRequest request) {
         String token = extractSessionToken(request);
         if (token != null) {
-            // Ici, tu récupères le username depuis la session HTTP
-            return (String) request.getSession().getAttribute("username");  // Exemple : l'username est dans la session
+            return (String) request.getSession().getAttribute("username");
         }
         return null;
     }
 
-    // Méthode pour extraire le token du cookie
     private String extractSessionToken(HttpServletRequest request) {
         if (request.getCookies() != null) {
-            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) { // Changement ici vers jakarta.servlet.http.Cookie
+            for (Cookie cookie : request.getCookies()) {
                 if ("SESSION_TOKEN".equals(cookie.getName())) {
-                    return cookie.getValue();  // Retourne la valeur du cookie, qui est le token
+                    return cookie.getValue();
                 }
             }
         }

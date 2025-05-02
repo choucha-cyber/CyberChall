@@ -2,131 +2,132 @@ package com.cadettesdelacyber.CyberChall.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
+@Table(name = "session")
 public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String titre;
-    private String description;
-
+    
+    //date de debut session
     private LocalDate dateDebut;
-    private LocalDate dateFin;
 
+    private String dateDebutFormatted; // Ajouter ce champ pour stocker la date formatée
+
+    
+   //date de durée : un mois
+    private int duree;
+
+    //token (jeton unique) id de session
     private String token;  // Lien unique généré
-    private String lien;
+    
+    
+   // Liste des modules sélectionnés/par session  
+    @ManyToMany
+    @JoinTable(
+        name = "session_sous_module",
+        joinColumns = @JoinColumn(name = "session_id"),
+        inverseJoinColumns = @JoinColumn(name = "sous_module_id")
+    )
+    private List<SousModule> sousModules;
 
-    private String modules; // Liste des modules en format "Module1,Module2,Module3"
 
+    //un admin déteint une ou plusieurs sessions
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;  // Admin qui a créé la session
-
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
+    
+    
     // === Constructeurs ===
+    
     public Session() {}
 
-    // Constructeur pour créer une session avec les informations essentielle
-    
-    public Session(String titre, String description, String modules, User user) {
-        this.titre = titre;
-        this.description = description;
-        this.dateDebut = LocalDate.now();  // Date de début = date actuelle
-        this.dateFin = dateDebut.plusMonths(1); // 1 mois de validité
-        this.token = UUID.randomUUID().toString();  // Génère un lien unique pour cette session
-        this.lien = "https://challenges.html?modules=" + modules;  // Génère le lien complet
-        this.modules = modules;  // Liste des modules
-        this.user = user;  // Admin qui crée la session
-    }
 
-    public Session(Long id, String titre, String description, LocalDate dateDebut, LocalDate dateFin, String token,
-			String lien, String modules, User user) {
+	public Session(Long id, LocalDate dateDebut, String dateDebutFormatted, int duree, String token,
+			List<SousModule> sousModules, Admin admin) {
 		super();
 		this.id = id;
-		this.titre = titre;
-		this.description = description;
 		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
+		this.dateDebutFormatted = dateDebutFormatted;
+		this.duree = duree;
 		this.token = token;
-		this.lien = lien;
-		this.modules = modules;
-		this.user = user;
+		this.sousModules = sousModules;
+		this.admin = admin;
 	}
 
 	// === Getters & Setters ===
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getDateDebut() {
-        return dateDebut;
-    }
-
-    public void setDateDebut(LocalDate dateDebut) {
-        this.dateDebut = dateDebut;
-    }
-
-    public LocalDate getDateFin() {
-        return dateFin;
-    }
-
-    public void setDateFin(LocalDate dateFin) {
-        this.dateFin = dateFin;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-    
-
-    public String getLien() {
-		return lien;
+	public Long getId() {
+		return id;
 	}
 
-	public void setLien(String lien) {
-		this.lien = lien;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getModules() {
-        return modules;
-    }
 
-    public void setModules(String modules) {
-        this.modules = modules;
-    }
+	public LocalDate getDateDebut() {
+		return dateDebut;
+	}
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setDateDebut(LocalDate dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+
+	public String getDateDebutFormatted() {
+		return dateDebutFormatted;
+	}
+
+
+	public void setDateDebutFormatted(String dateDebutFormatted) {
+		this.dateDebutFormatted = dateDebutFormatted;
+	}
+
+
+	public int getDuree() {
+		return duree;
+	}
+
+
+	public void setDuree(int duree) {
+		this.duree = duree;
+	}
+
+
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
+	public List<SousModule> getSousModules() {
+		return sousModules;
+	}
+
+
+	public void setSousModules(List<SousModule> sousModules) {
+		this.sousModules = sousModules;
+	}
+
+
+	public Admin getAdmin() {
+		return admin;
+	}
+
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+	
+	
 }

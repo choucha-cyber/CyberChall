@@ -1,43 +1,78 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-<div th:insert="~{fragments/header :: header}"></div>
+<head>
+<meta charset="UTF-8">
+<title>Mon compte</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 
 <body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div th:insert="~{fragments/nav :: nav}"></div>
 
-    <!-- NAVIGATION depuis le fragment nav -->
-    <div th:insert="~{fragments/nav :: nav}"></div>
-	<h1>👤 Mon compte</h1>
-	<p>
-		Bienvenue, <span th:text="${username}">Utilisateur</span>!
-	</p>
-	<p>
-		Votre rôle est : <span th:text="${role}">Utilisateur</span>
-	</p>
+	<div class="container">
+		<!-- account.html -->
+		<h1>Bienvenue <span style="color: #f37500;" th:text="${admin.username}">Admin</span></h1>
+		
+		<section>
+    <h2>Sessions créées</h2>
+
+    <div th:if="${sessions.isEmpty()}">
+        <p>Aucune session n’a encore été créée.</p>
+    </div>
+
+    <div th:each="session : ${sessions}" class="session-card">
+        <h3>Session du <span th:text="${session.dateDebut}"></span></h3>
+
+        <p><strong>Sous-modules :</strong></p>
+        <ul>
+            <li th:each="module : ${session.sousModules}" th:text="${module}"></li>
+        </ul>
+
+        <p><strong>Lien d'accès :</strong>
+            <a th:href="@{'/admin/accueil-admin'(modules=${session.sousModules})}" target="_blank">
+                Accéder à la session
+            </a>
+        </p>
+
+        <p><strong>QR Code :</strong></p>
+        <img th:src="${qrCodes[session.token]}" alt="QR Code pour cette session" width="200" height="200"/>
+
+        <hr/>
+    </div>
+</section>
+		
+		
+
+		<!--  
+		<h2>Liste des sessions créées :</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Token</th>
+					<th>Date de création</th>
+					<th>Sous-modules</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="session : ${sessions}">
+					<td th:text="${session.token}"></td>
+					<td th:text="${#dates.format(session.dateDebut, 'dd/MM/yyyy')}"></td>
+					<td>
+						<ul>
+							<li th:each="module : ${session.sousModules}" th:text="${module}"></li>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		-->
 
 
-	<div class="account-container">
-		<div class="section">
-			<h2>Mes sessions</h2>
-			<ul id="session-list">
-				<!-- Affichage des sessions récupérées -->
-				<li th:each="session : ${sessions}">
-					<div>
-						<strong>Token : </strong><span th:text="${session.token}"></span><br>
-						<strong>Role : </strong><span th:text="${session.role}"></span><br>
-						<strong>Début : </strong><span
-							th:text="${#dates.format(session.startDate, 'yyyy-MM-dd HH:mm')}"></span><br>
-						<strong>Expiration : </strong><span
-							th:text="${#dates.format(session.expirationDate, 'yyyy-MM-dd HH:mm')}"></span><br>
-					</div>
-				</li>
-
-			</ul>
-		</div>
 	</div>
 
-    <!-- FOOTER -->
-    <div th:insert="~{fragments/footer :: footer}"></div>
-
+	<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
+
 </html>

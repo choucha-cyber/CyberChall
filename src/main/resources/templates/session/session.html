@@ -5,77 +5,68 @@
 
 <body>
 
-    <!-- NAVIGATION depuis le fragment nav -->
-    <div th:insert="~{fragments/nav :: nav}"></div>
+	<!-- NAVIGATION depuis le fragment nav -->
+	<div th:insert="~{fragments/nav :: nav}"></div>
 
-    <div class="session-container create">
-        <h2>Préparez votre session</h2>
-        <p>Sélectionnez <b>2 à 4</b> modules pour générer un lien :</p>
+	<div class="session-container create">
+		<h2>Préparez votre session</h2>
+
+		<p>
+			Sélectionnez <b>2 à 4</b> modules :
+		</p>
+		<!-- Formulaire de création de session -->
+		<form action="/session" method="post">
+			<!-- 2 à 4 sous-modules sélectionnables -->
+			<!-- 
+			<label><input type="checkbox" name="sousModules" value="protection"> Protection des données</label> 
+			<label><input type="checkbox" name="sousModules" value="reseaux"> Réseaux sociaux</label> 
+			<label><input type="checkbox" name="sousModules" value="securite"> Sécurité des appareils</label> 
+			<label><input type="checkbox" name="sousModules" value="cyberattaques">Cyberattaques</label>
+			 -->
+			<div class="flex flex-wrap gap-6">
+    <div th:each="module : ${modules}" class="group relative w-64 h-40 bg-white border rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
         
-        <div class="module">
-            <input type="checkbox" value="protection" onclick="updateSelection()"> 
-            Protection des données et vie privée
-        </div>
-        
-        <div class="module">
-            <input type="checkbox" value="reseaux" onclick="updateSelection()"> 
-            Réseaux sociaux et influence numérique
-        </div>
+        <!-- Checkbox sur toute la carte -->
+        <label class="absolute inset-0 cursor-pointer z-10">
+            <input type="checkbox" name="sousModules" th:value="${module.nom}" class="hidden peer">
+        </label>
 
-        <div class="module">
-            <input type="checkbox" value="securite" onclick="updateSelection()"> 
-            Sécurité des appareils et connexions
+        <!-- Titre du module -->
+        <div class="flex items-center justify-center h-full text-xl font-semibold text-gray-800 z-0">
+            <span th:text="${module.nom}">Nom module</span>
         </div>
 
-        <div class="module">
-            <input type="checkbox" value="cyberattaques" onclick="updateSelection()"> 
-            Cyberattaques et menaces courantes
-        </div>
-
-        <button class="validate-btn" onclick="generateLink()" disabled>Valider</button>
-
-        <div class="link-container">
-            <p>Votre lien de session : <a id="session-link" href="#" target="_blank"></a></p>
+        <!-- Slide des sous-modules -->
+        <div class="absolute inset-0 bg-white flex gap-3 p-4 overflow-x-auto transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out z-20">
+            <div th:each="sm : ${module.sousModules}" class="min-w-[120px] bg-blue-100 rounded-md p-2 text-center shadow">
+                <span th:text="${sm.nom}">Sous-module</span>
+            </div>
         </div>
     </div>
-    
-    <script>
-let selectedModules = [];
+</div>
+			
+			<!-- Champs cachés -->
+			<input type="hidden" name="dateDebut" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" /> <input
+				type="hidden" name="duree" value="30" /> 
+			<input type="hidden" name="token" th:value="${token}" /> 
+			<input type="hidden" name="id" th:value="${admin.id}" />
 
-function updateSelection() {
-    selectedModules = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-        .map(cb => cb.value);
+			<button type="submit">Créer une session</button>
 
-    const btn = document.querySelector('.validate-btn');
-    btn.disabled = !(selectedModules.length >= 2 && selectedModules.length <= 4);
-}
+		</form>
+		
 
-function generateLink() {
-    const link = "https://challenges.html?modules=" + selectedModules.join(',');
-    const aTag = document.getElementById("session-link");
-    aTag.href = link;
-    aTag.textContent = link;
+		<!-- Lien généré -->
+		<div th:if="${createdSession != null}"
+			class="link-container mt-4 text-center">
+			<p>
+				Session créée : <strong>[[${createdSession.token}]]</strong>
+			</p>
+		</div>
+	</div>
 
- // Envoi au serveur
-    fetch('/sessions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ modules: selectedModules })
-    })
-    .then(res => res.json())
-    .then(data => {
-    console.log('Session enregistrée:', data);
-    window.location.href = "/session/session";  // redirige vers la page qui liste les sessions
-})
-
-    .catch(err => console.error('Erreur lors de la sauvegarde:', err));
-}
-</script>
-
- <!-- FOOTER -->
-    <div th:insert="~{fragments/footer :: footer}"></div>
+	<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

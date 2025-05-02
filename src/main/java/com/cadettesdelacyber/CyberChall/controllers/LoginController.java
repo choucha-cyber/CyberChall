@@ -1,5 +1,7 @@
 package com.cadettesdelacyber.CyberChall.controllers;
 
+import com.cadettesdelacyber.CyberChall.models.Admin;
+import com.cadettesdelacyber.CyberChall.services.AdminService;
 import com.cadettesdelacyber.CyberChall.services.SessionService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class LoginController {
 
     @Autowired
     private SessionService sessionService;
+    
+    @Autowired
+    private AdminService adminService;
 
     // Affichage page de connexion admin
     @GetMapping("/admin/connexion-admin")
@@ -29,46 +34,30 @@ public class LoginController {
                              Model model) {
         System.out.println("🔐 Tentative de login ADMIN avec : " + username + " / " + password);
 
-        // Ici, on appelle directement la méthode de login du service (on suppose que le service est déjà correctement configuré)
-        boolean isAuthenticated = sessionService.authenticate(username, password, "admin");
+        // Vérification de l'authentification dans le service
+        boolean isAuthenticated = sessionService.authenticate(username, password);
 
         if (isAuthenticated) {
+            Admin admin = adminService.findByUsername(username);  // Récupère l'objet admin
             System.out.println("✅ Connexion réussie pour l'admin : " + username);
-            // Sauvegarder les infos de connexion dans la session
+
+            // Sauvegarde l'objet admin dans la session HTTP
+            sessionHttp.setAttribute("admin", admin);  // <-- Ici
+
+            // autres informations dans la session HTTP
             sessionHttp.setAttribute("estConnecte", true);
             sessionHttp.setAttribute("username", username);
-            sessionHttp.setAttribute("role", "admin");
+
+            // Log pour vérifier que l'admin est bien dans la session
+            System.out.println("Admin dans la session: " + admin);
+     
+            // Redirection vers la page d'accueil admin
             return "redirect:/admin/accueil-admin";
         } else {
             System.out.println("❌ Échec de connexion - identifiants incorrects");
             model.addAttribute("error", "Identifiants incorrects");
-            return "admin/connexion-admin";  // Revenir à la page de connexion admin avec un message d'erreur
+            return "admin/connexion-admin";  // Retour à la page de connexion admin avec un message d'erreur
         }
     }
 
-    // Affichage page de connexion élève
-    @GetMapping("/eleve/connexion-eleve")
-    public String showStudentLoginPage() {
-        return "eleve/connexion-eleve";  // Page de connexion élève
-    }
-
-    // Traitement connexion pour les élèves
-    @PostMapping("/eleve/connexion-eleve")
-    public String loginEleve(@RequestParam("username") String username,
-                             @RequestParam("password") String password,
-                             Model model,
-                             HttpSession session) {
-        // Vérifier les identifiants pour l'élève
-        boolean isAuthenticated = sessionService.authenticate(username, password, "eleve");
-
-        if (isAuthenticated) {
-            session.setAttribute("estConnecte", true);   // Définir la session comme étant connectée
-            session.setAttribute("username", username);  // Sauvegarder le nom d'utilisateur
-            session.setAttribute("role", "eleve");       // Sauvegarder le rôle de l'utilisateur
-            return "redirect:/eleve/accueil-eleve";      // Rediriger vers l'accueil de l'élève
-        } else {
-            model.addAttribute("error", "Identifiants incorrects");  // Ajouter un message d'erreur
-            return "eleve/connexion-eleve";  // Revenir à la page de connexion élève
-        }
-    }
 }

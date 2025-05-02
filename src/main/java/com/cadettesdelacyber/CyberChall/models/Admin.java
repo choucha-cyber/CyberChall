@@ -1,23 +1,60 @@
 package com.cadettesdelacyber.CyberChall.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-public class Admin extends User {
+@Table(name = "admin")
+public class Admin {
 
-    // Constructeur par défaut (requis par JPA)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+    private String password;
+
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<Session> sessions;
+     
+
     public Admin() {
-        super();
-        this.setRole("admin");
+	
+	}
+
+	public Admin(Long id, String username, String password, List<Session> sessions) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.sessions = sessions;
+	}
+
+	// Getters / setters
+    public Long getId() {
+        return id;
     }
 
-    // Constructeur pratique pour l'authentification
-    public Admin(String username, String password) {
-        super(username, password);
-        this.setRole("admin");
+    public String getUsername() {
+        return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
 }

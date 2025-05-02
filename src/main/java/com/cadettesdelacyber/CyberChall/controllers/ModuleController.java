@@ -22,7 +22,7 @@ public class ModuleController {
         List<Module> modules = moduleService.getAllModules();
         model.addAttribute("modules", modules);
         model.addAttribute("nouveauModule", new Module());
-        return "challenge/list-modules"; // Page unique
+        return "modules/list-modules"; // Page unique
     }
 
     // 2️⃣ Création d’un nouveau module

@@ -3,67 +3,160 @@
 
 <!-- HEADER -->
 <div th:insert="~{fragments/header :: header}"></div>
+
 <style>
-.card-module {
+.admin {
+	margin-top: 3rem;
+}
+
+.admin .card-module {
 	position: relative;
-	border: 1px solid #ccc;
+	background-color: #2c2c3c;
+	border: 1px solid #444;
 	padding: 20px;
-	margin: 20px;
-	border-radius: 10px;
-	transition: box-shadow 0.3s;
+	border-radius: 12px;
+	overflow: hidden;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	height: 300px;
+	width: 300px;
+	z-index: 1;
+	margin-bottom: 2rem;
 }
 
-.card-module:hover {
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+.admin .card-module:hover {
+	transform: scale(1.03);
+	box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+	z-index: 2;
 }
 
-.sous-module-slider {
+.admin .card-title {
+	color: #f37500;
+}
+
+/* Slider sous-modules */
+.admin .sous-module-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: #1a1a26;
+	padding: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(100%);
+	transition: transform 0.4s ease, opacity 0.4s ease;
+	z-index: 5;
+	overflow: hidden;
+}
+
+.admin .card-module:hover .sous-module-container {
+	opacity: 1;
+	transform: translateX(0);
+	pointer-events: auto;
+}
+
+.admin .card-sous-module {
+	min-width: 180px;
+	height: 180px; 
+	display: flex;
+	justify-content: center;
+	 align-items: center;
+	background-color: #333;
+	color: #fff;
+	padding: 0.5rem;
+	border-radius: 8px;
+	text-align: center;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+	flex-shrink: 0;
+}
+
+/* Flèches */
+.admin .arrow-button {
+	background: rgba(255, 255, 255, 0.1);
+	border: none;
+	color: #fff;
+	font-size: 2rem;
+	padding: 0.5rem;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: background 0.2s;
+	z-index: 6;
+}
+.admin .arrow-button:hover {
+	background: rgba(255, 255, 255, 0.5);
+}
+
+.admin .arrow-left, .arrow-right {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.admin .arrow-left {
+	left: 10px;
+}
+
+.arrow-right {
+	right: 10px;
+}
+.admin .sous-module-slider {
 	display: flex;
 	overflow-x: auto;
 	scroll-behavior: smooth;
 	gap: 1rem;
-	max-width: 600px;
+	max-width: 100%;
+	padding-bottom: 0.5rem;
+	 align-items: center;
+}
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* Centre les cartes horizontalement */
+	gap: 20px; /* Ajoute de l'espace entre les cartes */
 }
 
-.card-module:hover .sous-module-slider {
-    transform: translateX(0); /* Slide-in au hover */
-}
-.card-sous-module {
-	min-width: 200px;
-	flex-shrink: 0;
-	background: #f0f0f0;
-	padding: 1rem;
-	border-radius: 8px;
-	text-align: center;
+.col-12, .col-md-6 {
+	display: flex; /* Flexbox pour chaque carte */
+	justify-content: center; /* Centre les cartes individuellement */
+	flex: 1 0 35%; /* 2 cartes par ligne, avec un espacement */
+	margin-bottom: 20px; /* Ajoute de l'espace sous chaque carte */
 }
 
-/* Flèches de navigation */
-.arrow-button {
-	background-color: transparent;
-	font-size: 2rem;
-	border: none;
-	cursor: pointer;
-}
+a#card-link.btn.btn-primary.mt-3 {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+	width: 15rem;
+	height:15rem;
+	}
+	/***************   MEDIA QUERY   *******************/
+	@media (max-width: 768px) {
+    .admin .card-module {
+        height: 200px; /* Réduit la hauteur sur les petits écrans */
+    }
 
-.arrow-button:hover {
-	opacity: 1;
-}
+    .admin .card-sous-module {
+        min-width: 150px; /* Réduit la largeur des sous-modules */
+    }
 
-.arrow-left {
-	left: 0;
-}
-
-.arrow-right {
-	right: 0;
-}
+    .admin .arrow-button {
+        font-size: 1.5rem; /* Réduit la taille des flèches sur petits écrans */
+    }
+    
 </style>
+
 
 <body>
 	<!-- NAVIGATION -->
 	<div th:insert="~{fragments/nav :: nav}"></div>
 
 	<!-- ✅ Message de bienvenue clair -->
-	<div class="accueil-admin">
+	<div>
 		<h2 th:if="${admin != null}">
 			Bienvenue, <span style="color: #f37500;" th:text="${admin.username}">Admin</span>
 			👋
@@ -71,7 +164,7 @@
 		<h2 th:if="${admin == null}">Bienvenue invité 👋</h2>
 	</div>
 
-	<main class="hero">
+	<main class="admin">
 
 		<!-- 🔸 Alerte session temporaire -->
 		<p th:if="${isSessionMode}" class="text-warning text-center fw-bold">
@@ -79,41 +172,62 @@
 			sauvegardées.</p>
 
 		<!-- ✅ Affichage des modules -->
-		<div class="container mt-4">
-    <div class="row">
-        <div th:each="module : ${modules}" class="col-md-6 mb-4">
-            <div class="card card-module position-relative overflow-hidden" style="height: 250px;">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${module.nom}"></h5>
+		<div class="container ">
+			<div class="row">
+				<div th:each="module, iterStat : ${modules}"
+					class="col-md-6 col-12 mb-4">
+					<div class="card card-module">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${module.nom}"></h5>
 
-                    <!-- Slider caché, affiché au survol -->
-                    <div class="sous-module-slider d-flex position-absolute top-0 start-0 w-100 h-100 bg-white p-3"
-                         style="transform: translateX(100%); transition: transform 0.3s ease; z-index: 10; overflow-x: auto; white-space: nowrap;">
-                        <div th:each="sm : ${module.sousModules}" class="card me-3" style="min-width: 150px;">
-                            <div class="card-body p-2">
-                                <p class="card-text" th:text="${sm.titre}"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+							<!-- Slider sous-modules avec flèches -->
+							<div class="sous-module-container">
+								<button class="arrow-button arrow-left" type="button"
+									data-slider-id="slider-[[${iterStat.index}]]">&#8592;</button>
+
+								<div class="sous-module-slider d-flex overflow-auto"
+									style="scroll-behavior: smooth; gap: 1rem; max-width: 100%;"
+									th:id="'slider-' + ${iterStat.index}">
+									<div th:each="sm, iterStat : ${sousModules}">
+										<p th:text="${sm.link}" ></p>
+										<!-- Vérifie que le lien est affiché ici -->
+										<a th:href="@{${sm.link}}" th:text="${sm.titre}"
+											class="btn btn-primary mt-3" id="card-link"></a>
+									</div>
+								</div>
+<div class="sous-module-slider d-flex overflow-auto" style="scroll-behavior: smooth; gap: 1rem; max-width: 100%;" id="slider-[[${iterStat.index}]]">
+    <div th:each="sm : ${module.sousModules}">
+        <p th:text="${sm.titre}" style="display:none">Titre du sous-module</p>
+        <p th:text="${sm.link}" style="display:none">Lien du sous-module</p>
+        <a th:href="@{${sm.link}}" th:text="${sm.titre}" class="btn btn-primary mt-3" id="card-link"></a>
     </div>
 </div>
-		
 
+								<button class="arrow-button arrow-right" type="button"
+									data-slider-id="slider-[[${iterStat.index}]]">&#8594;</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
 	</main>
 
+
+
+	<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
 	<script>
     document.querySelectorAll('.arrow-button').forEach(button => {
         button.addEventListener('click', () => {
             const sliderId = button.getAttribute('data-slider-id');
-            const slider = document.getElementById('slider-' + sliderId);
+            const slider = document.getElementById(sliderId);
 
             if (!slider) return;
 
-            const direction = button.classList.contains('left') ? -1 : 1;
-            const scrollAmount = 220; // largeur approximative d'une card + gap
+            const direction = button.classList.contains('arrow-left') ? -1 : 1;
+            const scrollAmount = 150;
 
             slider.scrollBy({
                 left: direction * scrollAmount,
@@ -123,7 +237,5 @@
     });
 </script>
 
-	<!-- FOOTER -->
-	<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

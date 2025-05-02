@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cadettesdelacyber.CyberChall.models.Admin;
+import com.cadettesdelacyber.CyberChall.models.SousModule;
 import com.cadettesdelacyber.CyberChall.services.ModuleService;
+import com.cadettesdelacyber.CyberChall.services.SousModuleService;
 
 @Controller
 public class HomeController {
 	
 	@Autowired
 	private ModuleService moduleService;
-
+	
+	@Autowired
+	private SousModuleService sousModuleService;
 
     // ============================================================
     // Section 1: Page d'accueil --> connexion (si connecté -->accueil-admin
@@ -41,7 +45,7 @@ public class HomeController {
 
 	@GetMapping("/admin/accueil-admin")
 	public String accueilAdmin(HttpSession session,
-	                           @RequestParam(required = false) List<String> sousModules,
+	                           @RequestParam(required = false) List<Long> sousModules,  // Utiliser Long si ce sont des IDs
 	                           Model model) {
 	    
 	    Admin admin = (Admin) session.getAttribute("admin");
@@ -52,21 +56,28 @@ public class HomeController {
 	        model.addAttribute("admin", admin);
 	        model.addAttribute("modules", moduleService.getAllModules());  // Récupère tous les modules disponibles
 	        model.addAttribute("isSessionMode", false);
-	        
+	        System.out.println("Admin connecté, récupération de tous les modules");
 	        
 	    } else if (sousModules != null && !sousModules.isEmpty()) {
 	        // Cas 2 : un élève accède via lien/QR → modules limités
+	        List<SousModule> sousModulesList = sousModuleService.findSousModulesByIds(sousModules);
+	        
+	        // Log pour vérifier les sous-modules récupérés
+	        System.out.println("Sous-modules récupérés : ");
+	        for (SousModule sm : sousModulesList) {
+	            System.out.println("ID: " + sm.getId() + ", Titre: " + sm.getTitre() + ", Lien: " + sm.getLink());
+	        }
+	        
 	        model.addAttribute("estConnecte", false);
-	        model.addAttribute("modules", sousModules);  // Juste les modules de la session
+	        model.addAttribute("modules", sousModulesList);  // Passe la liste d'objets SousModule
 	        model.addAttribute("isSessionMode", true);
 	    } else {
 	        // Accès non autorisé
 	        return "redirect:/";
 	    }
-
+	    
 	    return "admin/accueil-admin";  // Le même template, mais logique conditionnelle dans Thymeleaf
 	}
-
 
     // ============================================================
     // Section 3: Module cyberattaque
@@ -74,17 +85,17 @@ public class HomeController {
 
 	@GetMapping("/module-cyberattaque")
     public String showModuleCyberattaque() {
-        return "challenge/cyberattaque/module-cyberattaque";
+        return "modules/cyberattaque/module-cyberattaque";
     }
 
     @GetMapping("/base-cyberattaque")
     public String showBaseCyberattaque() {
-        return "challenge/cyberattaque/base-cyberattaque";
+        return "modules/cyberattaque/base-cyberattaque";
     }
     
     @GetMapping("/quiz-cyberattaque")
     public String showQuizCyberattaques() {
-        return "challenge/cyberattaque/quiz-cyberattaque";
+        return "modules/cyberattaque/quiz-cyberattaque";
     }
     
     // ============================================================
@@ -94,17 +105,17 @@ public class HomeController {
 
     @GetMapping("/module-reseaux")
     public String showModuleReseaux() {
-        return "challenge/reseau/module-reseaux";
+        return "modules/reseau/module-reseaux";
     }
 
     @GetMapping("/base-reseau")
     public String showBaseReseaux() {
-        return "challenge/reseau/base-reseaux";
+        return "modules/reseau/base-reseaux";
     }
     
     @GetMapping("/quiz-reseau")
     public String showQuizzReseaux() {
-        return "challenge/reseau/quiz-reseau";
+        return "modules/reseau/quiz-reseau";
     }
     
     // ============================================================
@@ -113,17 +124,17 @@ public class HomeController {
     
     @GetMapping("/module-securite")
     public String showModuleSecurite() {
-        return "challenge/securite/module-securite";
+        return "modules/securite/module-securite";
     }
     
     @GetMapping("/base-securite")
     public String showBaseSecurite() {
-        return "challenge/securite/base-securite";
+        return "modules/securite/base-securite";
     }
     
     @GetMapping("/quiz-securite")
     public String showQuizSecurite() {
-        return "challenge/securite/quiz-securite";
+        return "modules/securite/quiz-securite";
     }
     
     // ============================================================
@@ -132,7 +143,7 @@ public class HomeController {
 
     @GetMapping("/challenge-motdepasse")
     public String afficherChallengeMotdepasse() {
-        return "/challenge/cyberattaque/challenge-motdepasse";
+        return "/modules/cyberattaque/challenge-motdepasse";
     }
 
 

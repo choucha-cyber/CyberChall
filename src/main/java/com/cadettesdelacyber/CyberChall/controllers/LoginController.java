@@ -59,5 +59,4 @@ public class LoginController {
             return "admin/connexion-admin";  // Retour à la page de connexion admin avec un message d'erreur
         }
     }
-
 }

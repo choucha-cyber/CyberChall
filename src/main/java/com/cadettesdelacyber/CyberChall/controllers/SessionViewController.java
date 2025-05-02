@@ -40,7 +40,7 @@ public class SessionViewController {
         // Vérification de la session utilisateur, récupération de l'admin connecté
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("username") == null) {
-            return "redirect:/";  // Rediriger si l'utilisateur n'est pas connecté
+            return "redirect:/";  // Rediriger en page d'accueil si l'utilisateur n'est pas connecté
         }
 
         String username = (String) session.getAttribute("username");

@@ -21,18 +21,18 @@
 ## 1. 🎯 Introduction
 
 **CyberChall** est une application web pédagogique développée pour initier les collégiens et lycéens aux bonnes pratiques en cybersécurité.  
-Elle combine des contenus théoriques, des quiz et des challenges interactifs.
-
-Développée avec **Spring Boot** et **Thymeleaf**, elle permet de suivre la progression des utilisateurs et de gérer les sessions pédagogiques.
+Elle combine des contenus théoriques, des quiz (V1) et des challenges interactifs (V2).
 
 ---
 
 ## 2. 🎯 Objectifs de l’Application
 
-- Sensibiliser les élèves aux enjeux de la cybersécurité.  
-- Évaluer leurs connaissances via des modules interactifs.  
-- Suivre leur progression grâce à des outils de reporting simples.  
-- Fournir aux enseignants une interface de gestion intuitive.  
+- V1 :
+   - Sensibiliser les élèves aux enjeux de la cybersécurité  
+   - Évaluer leurs connaissances via des modules interactifs
+- V2 :
+   - Suivre leur progression grâce à des outils de reporting simples  
+   - Fournir aux enseignants une interface de gestion intuitive  
 
 ---
 
@@ -41,9 +41,9 @@ Développée avec **Spring Boot** et **Thymeleaf**, elle permet de suivre la pro
 ### 3.1 📚 Modules de Sensibilisation
 
 Chaque module comprend :  
-- ✅ Du contenu explicatif sur les risques numériques. *(V1)*  
-- ❓ Un quiz à choix multiples. *(V1)*  
-- 🔐 Un challenge ou mini-simulation. *(V2)*  
+- ✅ Du contenu explicatif *(V1)*  
+- ❓ Un quiz à choix multiples *(V1)*  
+- 🔐 Un challenge ou mini-simulation *(V2)*  
 
 **Exemples de modules :**
 - Protection des données  
@@ -55,10 +55,11 @@ Chaque module comprend :
 
 ### 3.2 🧭 Gestion des Sessions
 
-- Création de sessions (nom, date, thématiques sélectionnées)  
-- Liste des sessions disponibles dans un dashboard  
-- Participation à une session existante  
-- Durée de vie d'une session : 1 mois  
+- Création de sessions (admin, date, durée 1 mois, sous-modules)  
+- Une session doit contenir **2 à 4 sous-modules obligatoires**  
+- Un administrateur peut gérer plusieurs sessions  
+
+---
 
 #### 🔧 Diagramme UML - Architecture des Entités
 
@@ -70,6 +71,7 @@ classDiagram
         - String password
         + void createSession()
         + List~Session~ viewSessions()
+        + void deleteSession()
     }
 
     class Session {
@@ -77,41 +79,48 @@ classDiagram
         - String token
         - Date startDate
         - Int durationInDays
-        - Long admin_id
+        - Long admin_id [FK]
         + void addSubModules()
+        + List~SousModule~ getSousModules()
     }
 
     class SousModule {
         - Long id
         - String title
         - String type
-        - Long session_id
-        - Long module_id
-        - Long course_id
-        - Long challenge_id
+        - Long session_id [FK]
+        - Long module_id [FK]
+        - Long course_id [FK]
+        - Long challenge_id [FK]
         + void addQuiz()
         + void addChallenge()
-    }
-
-    class Quizz {
-        - String questions
-        - Long sousmodule_id
-    }
-
-    class Challenge {
-        - String description
-        - Long sousmodule_id
-    }
-
-    class Cours {
-        - Long id
-        - String content
-        - Long sousmodule_id
+        + Cours getCours()
+        + Challenge getChallenge()
+        + Quizz getQuizz()
     }
 
     class Module {
         - Long id
         - String name
+        + List~SousModule~ getSousModules()
+    }
+
+    class Quizz {
+        - Long id
+        - String questions
+        - Long sousmodule_id [FK]
+    }
+
+    class Challenge {
+        - Long id
+        - String description
+        - Long sousmodule_id [FK]
+    }
+
+    class Cours {
+        - Long id
+        - String content
+        - Long sousmodule_id [FK]
     }
 
     Admin "1" --> "many" Session : crée

@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/*
 @Controller
-@RequestMapping("/session")
+//@RequestMapping("/session") desactivation provisoire car 2 fichier controller pour les session temporaire
 public class SessionViewController {
 
     @Autowired
@@ -154,3 +154,5 @@ public class SessionViewController {
  }
 
 }
+
+*/

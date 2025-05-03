@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cadettesdelacyber.CyberChall.models.Admin;
 import com.cadettesdelacyber.CyberChall.models.Session;
+import com.cadettesdelacyber.CyberChall.models.SessionTemporaire;
 import com.cadettesdelacyber.CyberChall.models.SousModule;
 import com.cadettesdelacyber.CyberChall.services.SessionService;
+import com.cadettesdelacyber.CyberChall.services.SessionTemporaireService;
 import com.cadettesdelacyber.CyberChall.utils.QrCodeUtils;
 import com.cadettesdelacyber.CyberChall.services.AdminService;
 
@@ -30,6 +32,9 @@ public class AccountController {
 
     @Autowired
     private AdminService adminService;
+    
+    @Autowired
+    private  SessionTemporaireService sessionTemporaireService;
 
     // Page principale de compte - accessible uniquement si connecté
     @GetMapping("/admin/account")
@@ -39,39 +44,29 @@ public class AccountController {
             return "redirect:/admin/connexion-admin";
         }
 
+        // Sessions classiques
         List<Session> sessions = sessionService.findByAdmin(admin);
+        model.addAttribute("sessions", sessions);
+
+        // Sessions temporaires
+        List<SessionTemporaire> sessionTemporaires = sessionTemporaireService.getSessionsParAdmin(admin);
+        System.out.println("Sessions temporaires : " + sessionTemporaires.size());
+        model.addAttribute("sessionTemporaires", sessionTemporaires);
+
         Map<String, String> qrCodes = new HashMap<>();
-
-        for (Session s : sessions) {
-            // Construire les paramètres des sous-modules (ex: ?modules=securite&modules=reseaux)
-            StringBuilder urlBuilder = new StringBuilder("http://localhost:4040/admin/accueil-admin?");
-            for (SousModule module : s.getSousModules()) {
-                urlBuilder.append("modules=").append(module).append("&");
-            }
-
-            // Supprimer le dernier "&"
-            if (!s.getSousModules().isEmpty()) {
-                urlBuilder.setLength(urlBuilder.length() - 1);
-            }
-
+        for (SessionTemporaire s : sessionTemporaires) {
             try {
-                String qrBase64 = QrCodeUtils.generateQRCodeBase64(urlBuilder.toString(), 200, 200);
-                qrCodes.put(s.getToken(), qrBase64);
+                String url = "http://localhost:4040/admin/accueil-admin?" + s.getToken();
+                String qrBase64 = QrCodeUtils.generateQRCodeBase64(url, 200, 200);
+                s.setQrCodeBase64(qrBase64);  // bien s'assurer que l'objet a un champ pour ça
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-
-
-        model.addAttribute("sessions", sessions);
         model.addAttribute("admin", admin);
-        model.addAttribute("qrCodes", qrCodes);  // Token -> QR Code base64
-
         return "admin/account";
     }
-
-
 
     
     @PostMapping("/admin/account")

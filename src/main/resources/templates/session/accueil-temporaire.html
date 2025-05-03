@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-<!-- HEADER -->
 <div th:insert="~{fragments/header :: header}"></div>
-<div th:insert="~{fragments/nav :: nav}"></div>
 
-<div class="container text-center mt-4">
-    <h2>Bienvenue dans votre session temporaire 👋</h2>
+<body>
 
-    <p th:if="${isSessionMode}" class="text-warning fw-bold">
-        ⚠️ Vous êtes dans une session temporaire. Vos données ne seront pas sauvegardées.
-    </p>
+    <!-- NAVIGATION depuis le fragment nav -->
+    <div th:insert="~{fragments/nav :: nav}"></div>
 
-    <div class="row">
-        <div th:each="module : ${modules}" class="col-md-6 col-12 mb-4">
-            <div class="card card-module">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${module.nom}">Module</h5>
-                    <!-- Affichage des modules -->
-                    <p th:text="${module.description}"></p>
-                </div>
-            </div>
+    <div class="container">
+        <h2>Bienvenue dans votre session temporaire</h2>
+
+        <h3>Modules sélectionnés :</h3>
+        <div th:each="module : ${modules}">
+            <p th:text="${module.nom}"></p> <!-- Affiche le nom de chaque module sélectionné -->
+        </div>
+
+        <h3>QR Code pour accéder à la session :</h3>
+        <img th:src="|data:image/png;base64,${qrCodeBase64}|" alt="QR Code" />
+
+        <br/>
+        <a th:href="${urlSession}" target="_blank">Accéder à la session via le lien direct</a>
+
+        <!-- Affichage d'un message si l'utilisateur n'est pas connecté -->
+        <div th:if="${!estConnecte}">
+            <p>Vous n'êtes pas connecté. Accédez à votre session en utilisant le QR code ou le lien ci-dessus.</p>
         </div>
     </div>
 
-    <!-- QR Code pour accéder à la session -->
-    <div class="qr-code mt-4 text-center">
-    <h4>Scannez ce QR code pour accéder à la session :</h4>
-    <img th:src="${qrCode}" alt="QR Code" width="300" height="300" />
-</div>
-    
-
-</div>
-
-<!-- FOOTER -->
-<div th:insert="~{fragments/footer :: footer}"></div>
+    <!-- FOOTER -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

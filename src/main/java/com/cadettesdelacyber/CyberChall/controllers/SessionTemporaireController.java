@@ -93,8 +93,9 @@ public class SessionTemporaireController {
     }
 
     // 🎯 Accès via lien public/token
+ // Accès via lien public/token
     @GetMapping("/{token}")
-    public String accederSession(@PathVariable String token, Model model) {
+    public String accederSession(@PathVariable String token, @RequestParam List<Long> modules, Model model) {
         Optional<SessionTemporaire> sessionTempOpt = sessionTemporaireService.getSessionParToken(token);
 
         if (sessionTempOpt.isEmpty() || sessionTempOpt.get().getDateExpiration().isBefore(LocalDateTime.now())) {
@@ -102,21 +103,45 @@ public class SessionTemporaireController {
         }
 
         SessionTemporaire sessionTemp = sessionTempOpt.get();
-        model.addAttribute("estConnecte", false);
-        model.addAttribute("modules", sessionTemp.getModules()); // Passer les modules sélectionnés
-        model.addAttribute("isSessionMode", true);
+
+        // Filtrer les modules selon les paramètres de l'URL
+        List<Module> selectedModules = moduleService.getModuleByIds(modules); // Récupérer les modules par leurs IDs
+
+        model.addAttribute("modules", selectedModules); // Passer uniquement les modules sélectionnés à la vue
+        model.addAttribute("isSessionMode", true); // Indiquer que l'on est en mode session temporaire
+        model.addAttribute("estConnecte", false); // Indiquer que l'utilisateur n'est pas connecté (mode invité, par exemple)
+
+        // Générer l'URL pour accéder à la session
+        StringBuilder url = new StringBuilder("http://localhost:4040/admin/accueil-admin?modules=");
+        for (Module module : selectedModules) {
+            url.append(module.getId()).append("&modules=");
+        }
+        // Supprimer le dernier "&modules="
+        if (url.length() > 0) {
+            url.setLength(url.length() - "&modules=".length());
+        }
+
+        model.addAttribute("urlSession", url.toString());
 
         // Générer le QR code pour la session
-        String url = "http://localhost:4040/" + sessionTemp.getToken();
         String qrCodeBase64 = null;
         try {
-            qrCodeBase64 = QrCodeUtils.generateQRCodeBase64(url, 200, 200); // Générer le QR code pour la session
+            qrCodeBase64 = QrCodeUtils.generateQRCodeBase64(url.toString(), 200, 200);
         } catch (Exception e) {
             e.printStackTrace();
         }
         model.addAttribute("qrCodeBase64", qrCodeBase64); // Passer le QR code à la vue
 
         return "session/accueil-temporaire"; // Afficher la page d'accueil temporaire pour cette session
+    }
+
+    
+ // ======================
+    // 4. Statistiques de sessions
+    // ======================
+    @GetMapping("/session-statistic")
+    public String showSessionStatistics(Model model) {
+    	return "session/session-statistic";
     }
 
 }

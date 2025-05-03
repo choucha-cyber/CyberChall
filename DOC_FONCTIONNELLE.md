@@ -129,3 +129,47 @@ classDiagram
     SousModule --> Challenge : contient
     SousModule --> Cours : lié à
     SousModule --> Module : appartient à
+### 🔄 3.2.1 Sessions Pédagogiques Temporaires via QR Code
+
+Dans le cadre d’ateliers ponctuels ou de sessions de démonstration, l’application doit permettre à un administrateur de créer une **session pédagogique temporaire, anonyme et sans authentification**. Ce mode facilite un accès rapide aux modules via un simple **QR code** scannable par les élèves.
+
+#### 🎯 Objectif Fonctionnel
+
+- Création d'une session temporaire avec sélection de **2 à 4 modules existants**.
+- Génération automatique d’un **QR code** contenant un lien unique.
+- Accès public à une **page temporaire** qui :
+  - Est visuellement identique à la page `accueil-admin`.
+  - Affiche uniquement les modules sélectionnés.
+  - Ne nécessite pas d’authentification.
+
+#### 🔧 Fonctionnalités à Implémenter
+
+1. **Création de session temporaire** :
+   - Sélection de 2 à 4 modules par l’admin.
+   - Session valide pendant **30 jours** (création + 30 jours).
+   - Génération d’un **token UUID** servant d’identifiant unique.
+
+2. **Construction de l’URL temporaire** :
+   - Exemple de lien :
+     ```
+     http://localhost:4040/accueil-temporaire?modules=Cyberattaque&modules=Réseaux
+     ```
+   - Utilisé pour créer un QR code (via `zxing`, `QRCodeWriter`, etc.).
+
+3. **Composants nécessaires** :
+   - ✅ Un **QR code encodant** l’URL avec les modules sélectionnés.
+   - ✅ Un **contrôleur Spring Boot** :
+     ```java
+     @GetMapping("/accueil-temporaire")
+     public String afficherAccueilTemporaire(@RequestParam List<String> modules, Model model) {
+         // Chargement des modules par noms
+     }
+     ```
+   - ✅ Un **service** pour filtrer et charger dynamiquement les modules à afficher.
+   - ✅ Une **vue Thymeleaf** `accueil-temporaire.html`, basée sur `accueil-admin.html` :
+     - Supprimer le bloc d’authentification.
+     - Supprimer le menu administrateur.
+     - Afficher uniquement les modules reçus en paramètre.
+
+#### 🔗 Exemple de lien généré via QR code
+http://localhost:4040/accueil-temporaire?modules=Cyberattaque&modules=Réseaux

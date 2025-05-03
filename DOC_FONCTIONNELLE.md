@@ -7,6 +7,7 @@
 3. [Fonctionnalités Principales](#3-🧩-fonctionnalités-principales)  
    - [3.1 Modules de Sensibilisation](#31-📚-modules-de-sensibilisation)  
    - [3.2 Gestion des Sessions](#32-🧭-gestion-des-sessions)  
+     - [3.2.1 Sessions Temporaires via QR Code](#321-sessions-temporaires-via-qr-code)  
    - [3.3 Résultats et Suivi de Progression](#33-📊-résultats-et-suivi-de-progression)  
    - [3.4 Gestion des Utilisateurs](#34-👥-gestion-des-utilisateurs)  
    - [3.5 Authentification et Sécurité](#35-🔐-authentification-et-sécurité)  
@@ -21,18 +22,18 @@
 ## 1. 🎯 Introduction
 
 **CyberChall** est une application web pédagogique développée pour initier les collégiens et lycéens aux bonnes pratiques en cybersécurité.  
-Elle combine des contenus théoriques, des quiz (V1) et des challenges interactifs (V2).
+Elle combine des contenus théoriques, des quiz et des challenges interactifs.
+
+Développée avec **Spring Boot** et **Thymeleaf**, elle permet de suivre la progression des utilisateurs et de gérer les sessions pédagogiques.
 
 ---
 
 ## 2. 🎯 Objectifs de l’Application
 
-- V1 :
-   - Sensibiliser les élèves aux enjeux de la cybersécurité  
-   - Évaluer leurs connaissances via des modules interactifs
-- V2 :
-   - Suivre leur progression grâce à des outils de reporting simples  
-   - Fournir aux enseignants une interface de gestion intuitive  
+- Sensibiliser les élèves aux enjeux de la cybersécurité.  
+- Évaluer leurs connaissances via des modules interactifs.  
+- Suivre leur progression grâce à des outils de reporting simples.  
+- Fournir aux enseignants une interface de gestion intuitive.  
 
 ---
 
@@ -41,7 +42,7 @@ Elle combine des contenus théoriques, des quiz (V1) et des challenges interacti
 ### 3.1 📚 Modules de Sensibilisation
 
 Chaque module comprend :  
-- ✅ Du contenu explicatif *(V1)*  
+- ✅ Du contenu explicatif sur les risques numériques *(V1)*  
 - ❓ Un quiz à choix multiples *(V1)*  
 - 🔐 Un challenge ou mini-simulation *(V2)*  
 
@@ -55,11 +56,10 @@ Chaque module comprend :
 
 ### 3.2 🧭 Gestion des Sessions
 
-- Création de sessions (admin, date, durée 1 mois, sous-modules)  
-- Une session doit contenir **2 à 4 sous-modules obligatoires**  
-- Un administrateur peut gérer plusieurs sessions  
-
----
+- Création de sessions (nom, date, thématiques sélectionnées)  
+- Liste des sessions disponibles dans un dashboard  
+- Participation à une session existante  
+- Durée de vie d'une session : 1 mois  
 
 #### 🔧 Diagramme UML - Architecture des Entités
 
@@ -79,24 +79,9 @@ classDiagram
         - String token
         - Date startDate
         - Int durationInDays
-        - Long admin_id [FK]
+        - Long admin_id
         + void addSubModules()
         + List~SousModule~ getSousModules()
-    }
-
-    class SousModule {
-        - Long id
-        - String title
-        - String type
-        - Long session_id [FK]
-        - Long module_id [FK]
-        - Long course_id [FK]
-        - Long challenge_id [FK]
-        + void addQuiz()
-        + void addChallenge()
-        + Cours getCours()
-        + Challenge getChallenge()
-        + Quizz getQuizz()
     }
 
     class Module {
@@ -105,30 +90,46 @@ classDiagram
         + List~SousModule~ getSousModules()
     }
 
+    class SousModule {
+        - Long id
+        - String title
+        - String type
+        - Long session_id
+        - Long module_id
+        - Long course_id
+        - Long challenge_id
+        + void addQuiz()
+        + void addChallenge()
+        + Cours getCours()
+        + Challenge getChallenge()
+        + Quizz getQuizz()
+    }
+
     class Quizz {
         - Long id
         - String questions
-        - Long sousmodule_id [FK]
+        - Long sousmodule_id
     }
 
     class Challenge {
         - Long id
         - String description
-        - Long sousmodule_id [FK]
+        - Long sousmodule_id
     }
 
     class Cours {
         - Long id
         - String content
-        - Long sousmodule_id [FK]
+        - Long sousmodule_id
     }
 
     Admin "1" --> "many" Session : crée
     Session "1" --> "2..4" SousModule : contient
+    SousModule --> Module : appartient à
     SousModule --> Quizz : contient
     SousModule --> Challenge : contient
     SousModule --> Cours : lié à
-    SousModule --> Module : appartient à
+
 ### 🔄 3.2.1 Sessions Pédagogiques Temporaires via QR Code
 
 Dans le cadre d’ateliers ponctuels ou de sessions de démonstration, l’application doit permettre à un administrateur de créer une **session pédagogique temporaire, anonyme et sans authentification**. Ce mode facilite un accès rapide aux modules via un simple **QR code** scannable par les élèves.

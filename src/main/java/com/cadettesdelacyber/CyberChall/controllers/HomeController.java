@@ -82,11 +82,14 @@ public class HomeController {
     // ============================================================
     // Section 3: Module cyberattaque
     // ============================================================
-
+	
+	//modules/cyberattaque/exploitation-vulnerabilite
 	@GetMapping("/module-cyberattaque")
     public String showModuleCyberattaque() {
         return "modules/cyberattaque/module-cyberattaque";
     }
+	
+
 
     @GetMapping("/base-cyberattaque")
     public String showBaseCyberattaque() {

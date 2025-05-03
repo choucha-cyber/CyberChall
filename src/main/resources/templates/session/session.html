@@ -24,15 +24,19 @@
 		
 
 		<hr />
+		
+		<!-- fragments/sessions-fragment.html -->
+<div th:fragment="sessionsSection">
+    <h2>Mes sessions créées :</h2>
+    <div th:each="sessionTemporaire : ${sessionTemporaires}">
+        <p><strong>Date de création:</strong> <span th:text="${sessionTemporaire.dateCreation}"></span></p>
+        <p><strong>Modules :</strong> 
+            <span th:each="module : ${sessionTemporaire.modules}" th:text="${module.nom}"></span>
+        </p>
+        <img th:src="|data:image/png;base64,${sessionTemporaire.qrCodeBase64}|" alt="QR Code">
+    </div>
+</div>
 
-		<h2>Mes sessions créées :</h2>
-		<div th:each="sessionTemporaire : ${sessions}">
-		    <p><strong>Date de création:</strong> <span th:text="${sessionTemporaire.dateCreation}"></span></p>
-		    <p><strong>Modules :</strong> 
-		        <span th:each="module : ${sessionTemporaire.modules}" th:text="${module.nom}"></span>
-		    </p>
-		    <img th:src="|data:image/png;base64,${sessionTemporaire.qrCodeBase64}|" alt="QR Code">
-		</div>
 		
 
 	<!-- FOOTER -->

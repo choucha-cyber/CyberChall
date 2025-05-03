@@ -17,9 +17,6 @@ public class ModuleService {
 	@Autowired
     private ModuleRepository moduleRepository;
 	
-	@Autowired
-    private SousModuleRepository sousModuleRepository;
-	
 	public void removeSousModuleByIndex(Long moduleId, int index) {
 	    Optional<Module> optionalModule = moduleRepository.findById(moduleId);
 	    optionalModule.ifPresent(module -> {
@@ -47,6 +44,11 @@ public class ModuleService {
         return moduleRepository.findAll();
     }
     
+    // 🔹 Récupérer une liste de modules par leurs IDs
+    public List<Module> getModuleByIds(List<Long> ids) {
+        return moduleRepository.findAllById(ids);
+    }
+ 
     public List<Module> findAllWithSousModules() {
         return moduleRepository.findAll();
     }
@@ -54,7 +56,7 @@ public class ModuleService {
     public Optional<Module> getModuleById(Long id) {
         return moduleRepository.findById(id);
     }
-
+    
     // 🔹 Ajouter un nouveau module
     public Module createModule(Module module) {
         return moduleRepository.save(module);

@@ -8,62 +8,32 @@
 	<!-- NAVIGATION depuis le fragment nav -->
 	<div th:insert="~{fragments/nav :: nav}"></div>
 
-	<div class="session-container create">
-		<h2>Préparez votre session</h2>
+	<div class="container">
+		<h2>Créer une nouvelle session</h2>
+		<form method="POST" action="/session/session">
+    <h2>Sélectionnez les modules :</h2>
 
-		<p>
-			Sélectionnez <b>2 à 4</b> modules :
-		</p>
-		<!-- Formulaire de création de session -->
-		<form action="/session" method="post">
-			<!-- 2 à 4 sous-modules sélectionnables -->
-			<!-- 
-			<label><input type="checkbox" name="sousModules" value="protection"> Protection des données</label> 
-			<label><input type="checkbox" name="sousModules" value="reseaux"> Réseaux sociaux</label> 
-			<label><input type="checkbox" name="sousModules" value="securite"> Sécurité des appareils</label> 
-			<label><input type="checkbox" name="sousModules" value="cyberattaques">Cyberattaques</label>
-			 -->
-			<div class="flex flex-wrap gap-6">
-    <div th:each="module : ${modules}" class="group relative w-64 h-40 bg-white border rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
-        
-        <!-- Checkbox sur toute la carte -->
-        <label class="absolute inset-0 cursor-pointer z-10">
-            <input type="checkbox" name="sousModules" th:value="${module.nom}" class="hidden peer">
-        </label>
-
-        <!-- Titre du module -->
-        <div class="flex items-center justify-center h-full text-xl font-semibold text-gray-800 z-0">
-            <span th:text="${module.nom}">Nom module</span>
-        </div>
-
-        <!-- Slide des sous-modules -->
-        <div class="absolute inset-0 bg-white flex gap-3 p-4 overflow-x-auto transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out z-20">
-            <div th:each="sm : ${module.sousModules}" class="min-w-[120px] bg-blue-100 rounded-md p-2 text-center shadow">
-                <span th:text="${sm.titre}">Sous-module</span>
-            </div>
-        </div>
+    <div th:each="module : ${modules}">
+        <input type="checkbox" name="moduleIds" 
+               th:value="${module.id}" th:id="|mod__${module.id}|">
+        <label th:for="|mod__${module.id}|" th:text="${module.nom}"></label><br/>
     </div>
-</div>
-			
-			<!-- Champs cachés -->
-			<input type="hidden" name="dateDebut" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" /> <input
-				type="hidden" name="duree" value="30" /> 
-			<input type="hidden" name="token" th:value="${token}" /> 
-			<input type="hidden" name="id" th:value="${admin.id}" />
 
-			<button type="submit">Créer une session</button>
-
-		</form>
+    <button type="submit">Créer la session</button>
+</form>
 		
 
-		<!-- Lien généré -->
-		<div th:if="${createdSession != null}"
-			class="link-container mt-4 text-center">
-			<p>
-				Session créée : <strong>[[${createdSession.token}]]</strong>
-			</p>
+		<hr />
+
+		<h2>Mes sessions créées :</h2>
+		<div th:each="sessionTemporaire : ${sessions}">
+		    <p><strong>Date de création:</strong> <span th:text="${sessionTemporaire.dateCreation}"></span></p>
+		    <p><strong>Modules :</strong> 
+		        <span th:each="module : ${sessionTemporaire.modules}" th:text="${module.nom}"></span>
+		    </p>
+		    <img th:src="|data:image/png;base64,${sessionTemporaire.qrCodeBase64}|" alt="QR Code">
 		</div>
-	</div>
+		
 
 	<!-- FOOTER -->
 	<div th:insert="~{fragments/footer :: footer}"></div>

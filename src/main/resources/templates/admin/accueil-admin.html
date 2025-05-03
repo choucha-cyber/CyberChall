@@ -87,6 +87,7 @@
 	transition: background 0.2s;
 	z-index: 6;
 }
+
 .admin .arrow-button:hover {
 	background: rgba(255, 255, 255, 0.5);
 }
@@ -147,7 +148,7 @@ a#card-link.btn.btn-primary.mt-3 {
     .admin .arrow-button {
         font-size: 1.5rem; /* Réduit la taille des flèches sur petits écrans */
     }
-    
+    }
 </style>
 
 
@@ -214,10 +215,6 @@ a#card-link.btn.btn-primary.mt-3 {
 		</div>
 	</main>
 
-
-
-	<!-- FOOTER -->
-	<div th:insert="~{fragments/footer :: footer}"></div>
 	<script>
     document.querySelectorAll('.arrow-button').forEach(button => {
         button.addEventListener('click', () => {
@@ -236,6 +233,7 @@ a#card-link.btn.btn-primary.mt-3 {
         });
     });
 </script>
-
+<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

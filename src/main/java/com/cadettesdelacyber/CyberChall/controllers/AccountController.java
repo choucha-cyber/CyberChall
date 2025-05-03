@@ -32,7 +32,7 @@ public class AccountController {
     private AdminService adminService;
 
     // Page principale de compte - accessible uniquement si connecté
-    @GetMapping("/account")
+    @GetMapping("/admin/account")
     public String afficherCompte(HttpSession sessionHttp, Model model) {
         Admin admin = (Admin) sessionHttp.getAttribute("admin");
         if (admin == null) {
@@ -68,13 +68,13 @@ public class AccountController {
         model.addAttribute("admin", admin);
         model.addAttribute("qrCodes", qrCodes);  // Token -> QR Code base64
 
-        return "account";
+        return "admin/account";
     }
 
 
 
     
-    @PostMapping("/account")
+    @PostMapping("/admin/account")
     public String createSessionForAccount(@RequestParam String titre,
                                           @RequestParam String description,
                                           @RequestParam List<SousModule> sousModules,
@@ -103,24 +103,24 @@ public class AccountController {
         );
 
         // Redirection vers la page account (n'oubliez pas avec un message de session créée)
-        return "redirect:/account";  // Renvoie vers la page 'account' pour afficher la/les session-s créée-s
+        return "redirect:/admin/account";  // Renvoie vers la page 'account' pour afficher la/les session-s créée-s
     }
 
 
     // GET - Afficher le formulaire de création de compte
-    @GetMapping("/create-account")
+    @GetMapping("/admin/create-account")
     public String showCreateAccount() {
-        return "create-account";
+        return "admin/create-account";
     }
 
     // POST - Traiter le formulaire de création ( EVOLUTION : A FAIRE AVEC EMAIL PLUTOT QUE USERNAME)
-    @PostMapping("/create-account")
+    @PostMapping("/admin/create-account")
     public String createAccount(@RequestParam String username,
                                 @RequestParam String password,
                                 Model model) {
         if (adminService.findByUsername(username) != null) {
             model.addAttribute("error", "Ce nom d'utilisateur existe déjà.");
-            return "create-account";
+            return "admin/create-account";
         }
 
         Admin admin = new Admin();

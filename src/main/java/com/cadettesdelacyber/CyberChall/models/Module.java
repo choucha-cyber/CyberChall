@@ -13,8 +13,9 @@ public class Module {
 
     private String nom;
     
-    //lien de redirection vers le module en particulier (page de détails : base + quizz)
-    private String description;
+    //lien de redirection via l'image : vers un module en particulier (page de détails : base + quizz)
+    private String image;
+    private String link;
     
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SousModule> sousModules;
@@ -22,20 +23,16 @@ public class Module {
     // 🛠️ Constructeurs
     public Module() {}
 
-	public Module(Long id, String nom, String description, List<SousModule> sousModules) {
+    public Module(Long id, String nom, String image, String link, List<SousModule> sousModules) {
 		super();
 		this.id = id;
 		this.nom = nom;
-		this.description = description;
+		this.image = image;
+		this.link = link;
 		this.sousModules = sousModules;
 	}
 
-    // ✅ Getters & Setters
-	public Module(String nom, String description) {
-    	this.nom = nom;
-        this.description = description;
-    }
-
+	// ✅ Getters & Setters
 	public Long getId() {
 		return id;
 	}
@@ -52,12 +49,20 @@ public class Module {
 		this.nom = nom;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getImage() {
+		return image;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String image) {
+		this.image = image;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	public List<SousModule> getSousModules() {
@@ -67,5 +72,5 @@ public class Module {
 	public void setSousModules(List<SousModule> sousModules) {
 		this.sousModules = sousModules;
 	}
-   
+	
 }

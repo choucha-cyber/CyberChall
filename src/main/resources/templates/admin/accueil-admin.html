@@ -3,160 +3,105 @@
 
 <!-- HEADER -->
 <div th:insert="~{fragments/header :: header}"></div>
+<!--  PLACER LOGO (gauche) = TITRE CyberChall + Deconnexion seulement (+ = reste de la nav) -->
+<!-- NAVIGATION  <div th:insert="~{fragments/nav :: nav}"></div> -->
+<nav>
+	<div class="logo">
+		<img src="/images/logo.png" alt="Logo Cadettes de la Cyber">
+	</div>
+	<h1 id="toggle-nav"><a th:href="@{/}">CyberChall</a></h1>
+<div id="nav-container" style="display: none;">
+  <div th:insert="~{fragments/nav :: nav}"></div>
+</div>
+	<ul>
+		<li><a
+			th:href="${estConnecte} ? @{/deconnexion} : (role == 'admin' ? @{/admin/connexion-admin} : @{/})"
+			th:text="${estConnecte} ? 'Déconnexion' : 'Connexion'"> </a></li>
+		<li>+</li>
+	</ul>
 
+</nav>
 <style>
-.admin {
-	margin-top: 3rem;
+h2 {
+	text-align: left;
+	margin: 2rem;
 }
 
-.admin .card-module {
-	position: relative;
-	background-color: #2c2c3c;
-	border: 1px solid #444;
-	padding: 20px;
-	border-radius: 12px;
-	overflow: hidden;
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
-	height: 300px;
-	width: 300px;
-	z-index: 1;
-	margin-bottom: 2rem;
+ul {
+	display: flex;
+	list-style: none;
 }
 
-.admin .card-module:hover {
-	transform: scale(1.03);
-	box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
-	z-index: 2;
+a {
+	text-decoration: none;
+	margin: 1rem;
+	color: white;
 }
 
-.admin .card-title {
-	color: #f37500;
+.card-module, .sous-module-container, .sous-module {
+	background: linear-gradient(135deg, #18181e, #2c2c39);
+	color: white;
 }
 
-/* Slider sous-modules */
-.admin .sous-module-container {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
+.card-module {
+	width: 90%;
+	border-radius: 2rem;
+	display: flex;
+	margin: 2rem;
+	padding: 1rem;
+}
+
+h5.card-title {
+	width: fit-content;
+}
+
+.card-image {
 	width: 100%;
-	background-color: #1a1a26;
+	border-radius: 1rem;
+}
+
+.element-module {
+	width: 30%;
+}
+
+.sous-module-container {
+	margin-left: 1rem;
+	width: inherit;
+	border: none;
 	padding: 1rem;
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 1rem;
-	opacity: 0;
-	pointer-events: none;
-	transform: translateX(100%);
-	transition: transform 0.4s ease, opacity 0.4s ease;
-	z-index: 5;
-	overflow: hidden;
+	border-radius: 1rem;
 }
 
-.admin .card-module:hover .sous-module-container {
-	opacity: 1;
-	transform: translateX(0);
-	pointer-events: auto;
-}
-
-.admin .card-sous-module {
-	min-width: 180px;
-	height: 180px; 
-	display: flex;
-	justify-content: center;
-	 align-items: center;
-	background-color: #333;
-	color: #fff;
-	padding: 0.5rem;
-	border-radius: 8px;
-	text-align: center;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-	flex-shrink: 0;
-}
-
-/* Flèches */
-.admin .arrow-button {
-	background: rgba(255, 255, 255, 0.1);
-	border: none;
-	color: #fff;
-	font-size: 2rem;
-	padding: 0.5rem;
-	border-radius: 50%;
-	cursor: pointer;
-	transition: background 0.2s;
-	z-index: 6;
-}
-
-.admin .arrow-button:hover {
-	background: rgba(255, 255, 255, 0.5);
-}
-
-.admin .arrow-left, .arrow-right {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.admin .arrow-left {
-	left: 10px;
-}
-
-.arrow-right {
-	right: 10px;
-}
-.admin .sous-module-slider {
+.sous-module-slider {
 	display: flex;
 	overflow-x: auto;
 	scroll-behavior: smooth;
 	gap: 1rem;
 	max-width: 100%;
-	padding-bottom: 0.5rem;
-	 align-items: center;
-}
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center; /* Centre les cartes horizontalement */
-	gap: 20px; /* Ajoute de l'espace entre les cartes */
 }
 
-.col-12, .col-md-6 {
-	display: flex; /* Flexbox pour chaque carte */
-	justify-content: center; /* Centre les cartes individuellement */
-	flex: 1 0 35%; /* 2 cartes par ligne, avec un espacement */
-	margin-bottom: 20px; /* Ajoute de l'espace sous chaque carte */
+.sous-module {
+	width: 30%; /* ajuste selon la taille souhaitée */
+	flex-shrink: 0;
+	padding: 0.6rem;
+	margin: 0.8rem;
+	border-radius: 1rem;
 }
 
-a#card-link.btn.btn-primary.mt-3 {
-	text-decoration: none;
-	color: inherit;
-	display: block;
-	width: 15rem;
-	height:15rem;
-	}
-	/***************   MEDIA QUERY   *******************/
-	@media (max-width: 768px) {
-    .admin .card-module {
-        height: 200px; /* Réduit la hauteur sur les petits écrans */
-    }
+.arrow-button {
+	height: fit-content;
+}
 
-    .admin .card-sous-module {
-        min-width: 150px; /* Réduit la largeur des sous-modules */
-    }
-
-    .admin .arrow-button {
-        font-size: 1.5rem; /* Réduit la taille des flèches sur petits écrans */
-    }
-    }
+.sm-card-image {
+	background-color: white;
+	width: 90%;
+	border-radius: 1rem;
+}
 </style>
 
-
 <body>
-	<!-- NAVIGATION -->
-	<div th:insert="~{fragments/nav :: nav}"></div>
-
-	<!-- ✅ Message de bienvenue clair -->
+	<!-- ✅ Message de bienvenue clair  en haut a gauche sous la nav -->
 	<div>
 		<h2 th:if="${admin != null}">
 			Bienvenue, <span style="color: #f37500;" th:text="${admin.username}">Admin</span>
@@ -174,66 +119,121 @@ a#card-link.btn.btn-primary.mt-3 {
 
 		<!-- ✅ Affichage des modules -->
 		<div class="container ">
-			<div class="row">
-				<div th:each="module, iterStat : ${modules}"
-					class="col-md-6 col-12 mb-4">
-					<div class="card card-module">
-						<div class="card-body">
-							<h5 class="card-title" th:text="${module.nom}"></h5>
+			<div th:each="module, iterStat : ${modules}"
+				class="row col-12 mb-4 card card-module">
+				<!-- <div th:each="module, iterStat : ${modules}"
+					class="col-12 mb-4">   <div class="card card-module"> -->
+				<!--  titre module -->
+				<div class="element-module">
+					<h3 class="card-title" th:text="${module.nom}"></h3>
+					<!--  image module -->
+					<img th:src="@{${module.image}}" alt="Image du module"
+						class="card-image" />
+				</div>
+				<div class="card-body sous-module-container">
+					<!-- Slider sous-modules avec flèches -->
+					<!--  <div class="sous-module-container"> -->
+					<!-- Flèche gauche -->
+					<button class="arrow-button arrow-left" type="button"
+						data-slider-id="slider-[[${iterStat.index}]]">&#8592;</button>
 
-							<!-- Slider sous-modules avec flèches -->
-							<div class="sous-module-container">
-								<button class="arrow-button arrow-left" type="button"
-									data-slider-id="slider-[[${iterStat.index}]]">&#8592;</button>
+					<!-- Conteneur scrollable -->
+					<div class="sous-module-slider d-flex overflow-auto"
+						style="scroll-behavior: smooth; gap: 1rem; max-width: 100%;"
+						id="slider-[[${iterStat.index}]]">
 
-								<div class="sous-module-slider d-flex overflow-auto"
-									style="scroll-behavior: smooth; gap: 1rem; max-width: 100%;"
-									th:id="'slider-' + ${iterStat.index}">
-									<div th:each="sm, iterStat : ${sousModules}">
-										<p th:text="${sm.link}" ></p>
-										<!-- Vérifie que le lien est affiché ici -->
-										<a th:href="@{${sm.link}}" th:text="${sm.titre}"
-											class="btn btn-primary mt-3" id="card-link"></a>
-									</div>
-								</div>
-<div class="sous-module-slider d-flex overflow-auto" style="scroll-behavior: smooth; gap: 1rem; max-width: 100%;" id="slider-[[${iterStat.index}]]">
-    <div th:each="sm : ${module.sousModules}">
-        <p th:text="${sm.titre}" style="display:none">Titre du sous-module</p>
-        <p th:text="${sm.link}" style="display:none">Lien du sous-module</p>
-        <a th:href="@{${sm.link}}" th:text="${sm.titre}" class="btn btn-primary mt-3" id="card-link"></a>
-    </div>
-</div>
-
-								<button class="arrow-button arrow-right" type="button"
-									data-slider-id="slider-[[${iterStat.index}]]">&#8594;</button>
-							</div>
+						<!-- Sous-modules dans le slider -->
+						<div th:each="sm : ${module.sousModules}" class="sous-module">
+							<h6 class="card-title" th:text="${sm.titre}"></h6>
+							<a th:href="@{${sm.link}}"> <img th:src="@{${sm.imageUrl}}"
+								alt="Image du sous-module" class="sm-card-image" />
+								<!--  exemple de lien/chenmin  de redirection : /modules/cyberattaque/types-cyberattaques -->
+							</a>
 						</div>
 					</div>
-				</div>
 
+					<!-- Flèche droite -->
+					<button class="arrow-button arrow-right" type="button"
+						data-slider-id="slider-[[${iterStat.index}]]">&#8594;</button>
+
+				</div>
 			</div>
 		</div>
 	</main>
 
 	<script>
-    document.querySelectorAll('.arrow-button').forEach(button => {
+function updateArrowVisibility(slider, leftArrow, rightArrow) {
+    // Cache la flèche gauche si on est au début
+    if (slider.scrollLeft <= 0) {
+        leftArrow.style.visibility = 'hidden';
+    } else {
+        leftArrow.style.visibility = 'visible';
+    }
+
+    // Cache la flèche droite si on est à la fin
+    if (slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth - 1) {
+        rightArrow.style.visibility = 'hidden';
+    } else {
+        rightArrow.style.visibility = 'visible';
+    }
+}
+
+document.querySelectorAll('.card-module').forEach(module => {
+    const slider = module.querySelector('.sous-module-slider');
+    const leftArrow = module.querySelector('.arrow-left');
+    const rightArrow = module.querySelector('.arrow-right');
+
+    if (!slider || !leftArrow || !rightArrow) return;
+
+    // Initialiser la visibilité
+    updateArrowVisibility(slider, leftArrow, rightArrow);
+
+    // Ajouter l'écoute sur scroll manuel aussi
+    slider.addEventListener('scroll', () => {
+        updateArrowVisibility(slider, leftArrow, rightArrow);
+    });
+
+    // Ajouter les événements aux flèches
+    [leftArrow, rightArrow].forEach(button => {
         button.addEventListener('click', () => {
-            const sliderId = button.getAttribute('data-slider-id');
-            const slider = document.getElementById(sliderId);
-
-            if (!slider) return;
-
             const direction = button.classList.contains('arrow-left') ? -1 : 1;
-            const scrollAmount = 150;
+            const scrollAmount = 300;
 
             slider.scrollBy({
                 left: direction * scrollAmount,
                 behavior: 'smooth'
             });
+
+            // Laisser le scroll se faire puis mettre à jour les flèches
+            setTimeout(() => {
+                updateArrowVisibility(slider, leftArrow, rightArrow);
+            }, 300);
         });
     });
+});
+
+// Nav
+const title = document.getElementById('toggle-nav');
+  const nav = document.getElementById('nav-container');
+
+  title.addEventListener('mouseenter', () => {
+    nav.style.display = 'block';
+  });
+
+  title.addEventListener('mouseleave', () => {
+    setTimeout(() => nav.style.display = 'none', 300);
+  });
+
+  nav.addEventListener('mouseenter', () => {
+    nav.style.display = 'block';
+  });
+
+  nav.addEventListener('mouseleave', () => {
+    nav.style.display = 'none';
+  });
 </script>
-<!-- FOOTER -->
+
+	<!-- FOOTER -->
 	<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

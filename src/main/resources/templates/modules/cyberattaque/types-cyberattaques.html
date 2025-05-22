@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+<style>
+h2 {
+	text-align: left;
+}
+
+#standard {
+	width: 78%;
+	padding: 0.8rem;
+	border-block-style: double;
+	border-radius: 1rem;
+	margin-top: 2rem;
+}
+
+.container-flex {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin: auto;
+	margin-bottom: 3rem;
+}
+
+.left {
+	width: 45%;
+}
+
+.right {
+	width: 45%;
+}
+
+p {
+	text-align: center;
+}
+
+a {
+	text-decoration: none;
+}
+
+.bt button {
+	display: grid;
+	background: linear-gradient(135deg, #18181e, #2c2c39);
+	color: #fff;
+	width: 100%;
+	margin-top: 2rem;
+}
+
+svg {
+	color: white;
+}
+</style>
+
+<body>
+
+	<!-- NAVIGATION depuis le fragment nav -->
+	<div th:insert="~{fragments/nav :: nav}"></div>
+
+	<div class="container container-flex">
+		<!-- Flèche de retour vers page accueil-->
+		<a th:href="@{/admin/accueil-admin}"> <svg
+				xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+				fill="currentColor" class="bi bi-arrow-left-circle-fill"
+				viewBox="0 0 16 16">
+  <path
+					d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+</svg>
+		</a>
+
+
+		<div class="left">
+			<h2>Types de Cyberattaques</h2>
+			<img id="standard" src="/images/logo_cadettes.png" />
+		</div>
+
+		<div class="right">
+			<p>Explication du cours en quelques phrases.</p>
+			<p>Explication du cours en quelques phrases.</p>
+			<p>Explication du cours en quelques phrases.</p>
+
+			<div class="bt">
+				<a th:href="@{/modules/cyberattaque/base-cyberattaque}">
+					<button>Cours</button>
+				</a> <a th:href="@{/modules/cyberattaque/quiz-cyberattaque}">
+					<button>Quiz</button>
+				</a> <a th:href="@{/modules/cyberattaque/challenge-motdepasse}">
+					<button>Challenge</button>
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

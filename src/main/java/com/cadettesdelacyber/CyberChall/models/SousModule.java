@@ -32,7 +32,9 @@ public class SousModule {
 	private List<Session> sessions;
 
 	//lien de redirection vers le sous-module en particulier (page de détails : base + quizz)
-    private String link;
+    private String link; //url
+    
+    private String imageUrl;
 	
 	//Foreign Key to Cours
 	@OneToOne
@@ -53,7 +55,7 @@ public class SousModule {
 		
 	}
 
-	public SousModule(Long id, String titre, Module module, List<Session> sessions, String link, Cours cours,
+	public SousModule(Long id, String titre, Module module, List<Session> sessions, String link, String imageUrl, Cours cours,
 			Quizz quizz, Challenge challenge) {
 		super();
 		this.id = id;
@@ -61,6 +63,7 @@ public class SousModule {
 		this.module = module;
 		this.sessions = sessions;
 		this.link = link;
+		this.imageUrl = imageUrl;
 		this.cours = cours;
 		this.quizz = quizz;
 		this.challenge = challenge;
@@ -104,6 +107,14 @@ public class SousModule {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Cours getCours() {

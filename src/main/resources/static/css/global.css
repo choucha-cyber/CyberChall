@@ -1,17 +1,18 @@
 /* ---- 🌑 Mode Sombre (par défaut) ---- */
+html {
+	margin: 1rem;
+}
 body {
     font-family: 'Roboto', Arial, sans-serif;
     background: linear-gradient(135deg, #18181e, #2c2c39);
     color: #fff;
-    margin: 0;
     padding: 0;
-    text-align: center;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     transition: background 0.5s ease, color 0.5s ease;
 }
-
+/***********************     HEADER     ******************************/
 header {
     display: flex;
     justify-content: space-between;
@@ -48,32 +49,6 @@ header nav ul li a {
 
 header nav ul li a:hover {
     color: #f37500;
-}
-
-/* ---- Section Hero ---- */
-/* .hero {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem 5%;
-    min-height: 70vh;
-    transition: background 0.5s ease;
-} */
-.hero {
-    padding: 2rem 5%;
-    min-height: 70vh;
-    transition: background 0.5s ease;
-}
-
-
-.hero-image {
-    flex: 1 1 40%;
-    max-width: 400px;
-    height: auto;
-    background: url('/assets/imgindex.jpg') no-repeat center center;
-    background-size: cover;
-    border-radius: 20px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* ---- 🎚️ Toggle Switch ---- */
@@ -128,7 +103,7 @@ body.light-mode .toggle-switch::before {
     left: calc(100% - 24px);
 }
 
-/* --- Styles pour la navigation --- */
+/***********    NAV   **********************/
 nav {
     display: flex;
     justify-content: space-between;
@@ -137,11 +112,12 @@ nav {
     background-color: rgba(44, 44, 57, 0.1); /* Très léger fond */
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    width: 80%;
+    width: 100%;
     margin: auto;
     border-radius: 16px;
     border: none; /* Plus de bordure */
     box-shadow: none; /* Pas d’ombre visible */
+    width: -moz-available;
 }
 
 .logo {
@@ -184,7 +160,7 @@ nav h1 a {
 }
 
 
-/* --- Styles pour le menu burger (pour mobile) --- */
+/*************    MENU BUGER VERSION MOBILE    ***************/
 .burger {
     display: none; /* Caché par défaut sur les écrans larges */
     flex-direction: column;
@@ -240,19 +216,12 @@ nav h1 a {
 
 
 /* ---- 📌 Style des cartes ---- */
-/*.modules {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 2rem;
-} */
 
 .modules {
     padding: 2rem;
 }
 
-
+/*
 .card {
     width: 250px;
     height: 250px;
@@ -271,7 +240,7 @@ nav h1 a {
     align-items: center;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
-
+*/
 .card:hover, .card.create-account:hover {
     transform: scale(1.07);
     box-shadow: 0px 6px 20px #151515;
@@ -300,8 +269,8 @@ body.light-mode .card {
 
 /**************   BUTTON    **********************/
 button {
-    background-color: #f37500;
-    color: white;
+   /* background-color: #f37500;
+    color: white; */
     border: none;
     border-radius: 10px;
     padding: 0.8rem;
@@ -377,6 +346,10 @@ button:hover {
   opacity: 0.9;
 }
 
+footer, h2 {
+	text-align: center;
+}
+
 /********************RESPONSIVE : MENU BURGER*********************/
 .burger {
   display: none;
@@ -437,5 +410,3 @@ button:hover {
     text-align: center; /* Centre les liens */
   }
 }
-
-

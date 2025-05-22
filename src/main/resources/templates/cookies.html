@@ -1,0 +1,53 @@
+<div th:fragment="cookies" id="cookies" 
+	style=" font-size: 0.7rem; bottom: 5rem; border: 0.1rem solid #ff8c1a; width: 50%; height: 20rem; position: fixed; left: 20rem; border-radius: 3px;  padding: 1rem;">
+	<p style="margin-left: 25rem; z-index: 2147483647;.blur-background { opacity: 0.3; }">
+		<a href="/" id="refuseCookies" style="color: #ff8c1a; text-decoration:none; transform: translateX(-50%); left: 50% ">Continuez sans accepter -></a>
+	</p>
+	
+	<p>
+		Avec votre accord, <a href="/"  style="color: #ff8c1a; text-decoration:none">nos partenaires</a> et nous utilisons
+		des cookies ou technologies similaires pour stocker et acc&eacute;der a des
+		informations personnelles comme votre visite sur ce site. Vous pouvez
+		retirez votre consentement ou vous opposer aux traitements bas&eacute;s sur
+		l'int&eacute;ret l&eacute;gitime à tout moment en cliquant sur "En savoir plus" ou
+		dans notre politique de confidentialit&eacute; sur ce site.
+	</p>
+	<br>
+	<br> <b> Avec nos partenaires, nous traitons les donn&eacute;es
+		suivantes : </b>
+	<p>Donn&eacute;es de g&eacute;olocalisation pr&eacute;cises et identification par
+		analyse du terminal, Publicit&eacute;s et contenu personnalis&eacute;s, mesure de
+		performance des publicit&eacute;s et du contenu, donn&eacute;es d'audience et
+		d&eacute;veloppement de produit, Retention of technical data, Stocker et/ou
+		acc&eacute;der a des informations sur un terminal</p>
+	<a href="/" id="savoirPlus"
+		style=" color: #ff8c1a; border: 1px solid #ff8c1a; text-decoration:none; padding: 0.2rem; border-radius: 0.5rem; margin-right:0.3rem;">En
+		savoir plus -></a> <a href="/" id="acceptCookies"
+		style="background-color: #ff8c1a; text-decoration:none; color: white; padding: 0.2rem; border-radius: 0.5rem;">Accepter
+		& Fermer</a>
+</div>
+
+	<script type="text/javascript">
+		let cookies = document.getElementById("cookies");
+		let accept= document.getElementById("acceptCookies");
+		let refuse= document.getElementById("refuseCookies");
+		let loginContent = document.getElementByClass("login-container");
+	
+		cookies.style.display= "none";
+		accept.addEventListener("click",function(){
+    	cookies.style.display= "none";
+    	localStorage.setItem("cookiesDisplayed","true");
+    	if (loginContent) loginContent.classList.remove("blur-background");
+		});
+		
+		refuse.addEventListener("click",function(){
+    	cookies.style.display= "none";
+    	localStorage.setItem("cookiesDisplayed","false");
+    	if (loginContent) loginContent.classList.remove("blur-background");
+		});
+		setTimeout(()=> {
+    	if(!localStorage.getItem("cookiesDisplayed"))
+    	cookies.style.display= "block";
+    	if (loginContent) loginContent.classList.add("blur-background");
+		},2000);
+	</script>

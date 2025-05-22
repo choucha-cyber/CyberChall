@@ -3,7 +3,6 @@ package com.cadettesdelacyber.CyberChall.services;
 import com.cadettesdelacyber.CyberChall.models.Module;
 import com.cadettesdelacyber.CyberChall.models.SousModule;
 import com.cadettesdelacyber.CyberChall.repositories.ModuleRepository;
-import com.cadettesdelacyber.CyberChall.repositories.SousModuleRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +65,7 @@ public class ModuleService {
     public Module updateModule(Long id, Module moduleDetails) {
         return moduleRepository.findById(id).map(module -> {
             module.setNom(moduleDetails.getNom());
-            module.setDescription(moduleDetails.getDescription());
+            module.setDescription(moduleDetails.getImage());
             module.setSousModules(moduleDetails.getSousModules());
             return moduleRepository.save(module);
         }).orElseThrow(() -> new RuntimeException("Module non trouvé"));

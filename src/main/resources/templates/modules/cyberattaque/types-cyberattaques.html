@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+
+<body>
+
+	<!-- NAVIGATION depuis le fragment nav -->
+	<div th:insert="~{fragments/nav :: nav}"></div>
+
+	<div id="quiz-container">
+		<h1>Quiz : Cyberattaques & Menaces Courantes</h1>
+
+		<div id="timer">
+			<i class="fas fa-hourglass-half"></i> Temps restant : <span id="time">02:00</span>
+		</div>
+
+		<form id="quiz-form">
+			<div id="questions-container">
+				<!-- Questions injectées ici -->
+			</div>
+
+		</form>
+
+		<div id="result"></div>
+		<div id="score" style="display: none;"></div>
+	</div>
+
+	<!-- FOOTER -->
+	<div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

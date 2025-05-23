@@ -83,20 +83,19 @@ public class HomeController {
     // Section 3: Module cyberattaque
     // ============================================================
 	
-	//modules/cyberattaque/exploitation-vulnerabilite
+	//modules/cyberattaque
 	@GetMapping("/module-cyberattaque")
     public String showModuleCyberattaque() {
         return "modules/cyberattaque/module-cyberattaque";
     }
 	
 
-
-    @GetMapping("/base-cyberattaque")
+    @GetMapping("/modules/cyberattaque/base-cyberattaque")
     public String showBaseCyberattaque() {
         return "modules/cyberattaque/base-cyberattaque";
     }
     
-    @GetMapping("/quiz-cyberattaque")
+    @GetMapping("/modules/cyberattaque/quiz-cyberattaque")
     public String showQuizCyberattaques() {
         return "modules/cyberattaque/quiz-cyberattaque";
     }
@@ -144,9 +143,9 @@ public class HomeController {
     // Section 6: Challenge mot de passe
     // ============================================================
 
-    @GetMapping("/challenge-motdepasse")
+    @GetMapping("/modules/cyberattaque/challenge-motdepasse")
     public String afficherChallengeMotdepasse() {
-        return "/modules/cyberattaque/challenge-motdepasse";
+        return "modules/cyberattaque/challenge-motdepasse";
     }
 
 

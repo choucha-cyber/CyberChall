@@ -22,6 +22,8 @@ public class SousModule {
 	
 	private String titre;
 	
+	private String imageUrl;
+	
 	//Foreign Key to Module
 	@ManyToOne
     @JoinColumn(name = "module_id")
@@ -53,11 +55,12 @@ public class SousModule {
 		
 	}
 
-	public SousModule(Long id, String titre, Module module, List<Session> sessions, String link, Cours cours,
+	public SousModule(Long id, String titre,  String imageUrl,Module module, List<Session> sessions, String link, Cours cours,
 			Quizz quizz, Challenge challenge) {
 		super();
 		this.id = id;
 		this.titre = titre;
+		this.imageUrl = imageUrl;
 		this.module = module;
 		this.sessions = sessions;
 		this.link = link;
@@ -80,6 +83,14 @@ public class SousModule {
 
 	public void setTitre(String titre) {
 		this.titre = titre;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Module getModule() {

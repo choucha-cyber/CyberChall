@@ -14,6 +14,10 @@ public class SousModuleService {
 
     @Autowired
     private SousModuleRepository sousModuleRepository;
+    
+    public SousModule findById(Long id) {
+        return sousModuleRepository.findById(id).orElse(null); // ou lancer une exception si préféré
+    }
 
     public SousModule saveSousModule(SousModule sousModule) {
         return sousModuleRepository.save(sousModule);
@@ -26,6 +30,6 @@ public class SousModuleService {
     public List<SousModule> findSousModulesByIds(List<Long> ids) {
         return sousModuleRepository.findAllById(ids);
     }
-
-
+    
+ 
 }

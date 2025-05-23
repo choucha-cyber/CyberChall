@@ -1,29 +1,55 @@
 package com.cadettesdelacyber.CyberChall.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.cadettesdelacyber.CyberChall.models.SousModule;
+import com.cadettesdelacyber.CyberChall.services.SousModuleService;
 
 @Controller
 @RequestMapping("/modules")
 public class SousModulesController {
+	
+	@Autowired
+	private SousModuleService sousModuleService;
+	
+	// page d'accueil des sous-modules: modules/accueil-modules : modules/accueil-modules
+	@GetMapping("/accueil-modules/{id}")
+	public String afficherModuleDepuisSousModule(@PathVariable Long id, Model model) {
+	    SousModule sousModule = sousModuleService.findById(id);
+
+	    if (sousModule == null) {
+	        return "redirect:/modules"; // Ou afficher une page d'erreur
+	    }
+
+	    model.addAttribute("sousModule", sousModule); // ✅ PAS juste sousModule.getImageUrl()
+	    return "modules/accueil-modules";
+	}
+
+
 	
 	// ============================================================
     // Section 1: Sous-modules Cyberattaques : Affichages ==> GET
     // ============================================================
     @GetMapping("/cyberattaque/exploitation-vulnerabilite")
     public String showExploitationVulnerabilitePage() {
-        return "/cyberattaque/exploitation-vulnerabilite";  
+        return "modules/cyberattaque/exploitation-vulnerabilite";  
     }
     
     @GetMapping("/cyberattaque/force-brute")
     public String showForceBrutePage() {
-        return "/cyberattaque/force-brute";  
+        return "modules/cyberattaque/force-brute";  
     }
     
     @GetMapping("/cyberattaque/types-cyberattaques")
-    public String showTypesCyberattaquesPage() {
-        return "/cyberattaque/types-cyberattaques";  
+    public String showTypesCyberattaque() {
+        return "modules/cyberattaque/types-cyberattaques";
     }
     
     // =================================================================
@@ -31,17 +57,17 @@ public class SousModulesController {
     // =================================================================
     @GetMapping("/protection/donnee-perso")
     public String showProtectionDonneePage() {
-        return "/protection/donnee-perso";  
+        return "modules/protection/donnee-perso";  
     }
     
     @GetMapping("/protection/rgpd")
     public String showRgpdPage() {
-        return "/protection/rgpd";  
+        return "modules/protection/rgpd";  
     }
     
     @GetMapping("/protection/tracking")
     public String showTrackingPage() {
-        return "/protection/tracking";  
+        return "modules/protection/tracking";  
     }
     
     // =================================================================
@@ -49,37 +75,37 @@ public class SousModulesController {
     // =================================================================
     @GetMapping("/reseau/algorithmes")
     public String showAlgorithmesPage() {
-        return "/reseau/algorithmes";  
+        return "modules/reseau/algorithmes";  
     }
     
     @GetMapping("/reseau/bots-fake")
     public String showBotsFakePage() {
-        return "/reseau/bots-fake";  
+        return "modules/reseau/bots-fake";  
     }
     
     @GetMapping("/reseau/cyber-harcelement")
     public String showcyberHarcelementPage() {
-        return "/reseau/cyber-harcelement";  
+        return "modules/reseau/cyber-harcelement";  
     }
     
     @GetMapping("/reseau/deepfakes")
     public String showDeepfakesPage() {
-        return "/reseau/deepfakes";  
+        return "modules/reseau/deepfakes";  
     }
     
     @GetMapping("/reseau/e-reutation")
     public String showEreputationPage() {
-        return "/reseau/e-reutation";  
+        return "modules/reseau/e-reutation";  
     }
     
     @GetMapping("/reseau/propagande")
     public String showPropagandePage() {
-        return "/reseau/propagande";  
+        return "modules/reseau/propagande";  
     }
     
     @GetMapping("/reseau/responsabilite-numerique")
     public String showresponsabiliteNumeriquePage() {
-        return "/reseau/responsabilite-numerique";  
+        return "modules/reseau/responsabilite-numerique";  
     }
     
     // =================================================================
@@ -87,16 +113,16 @@ public class SousModulesController {
     // =================================================================
     @GetMapping("/securite/bluetooth-iot")
     public String showBluetoothIotPage() {
-        return "/securite/bluetooth-iot";  
+        return "modules/securite/bluetooth-iot";  
     }
     
     @GetMapping("/securite/securite-appareils")
     public String showSecuriteAppareilPage() {
-        return "/securite/securite-appareils";  
+        return "modules/securite/securite-appareils";  
     }
     
     @GetMapping("/securite/wifi-puplic-vpn")
     public String showWifiPublicVpnPage() {
-        return "/securite/wifi-puplic-vpn";  
+        return "modules/securite/wifi-puplic-vpn";  
     }
 }

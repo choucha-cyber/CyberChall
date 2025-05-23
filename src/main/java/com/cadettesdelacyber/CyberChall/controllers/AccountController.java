@@ -103,13 +103,13 @@ public class AccountController {
 
 
     // GET - Afficher le formulaire de création de compte
-    @GetMapping("/admin/create-account")
+    @GetMapping("/create-account")
     public String showCreateAccount() {
         return "admin/create-account";
     }
 
     // POST - Traiter le formulaire de création ( EVOLUTION : A FAIRE AVEC EMAIL PLUTOT QUE USERNAME)
-    @PostMapping("/admin/create-account")
+    @PostMapping("/create-account")
     public String createAccount(@RequestParam String username,
                                 @RequestParam String password,
                                 Model model) {

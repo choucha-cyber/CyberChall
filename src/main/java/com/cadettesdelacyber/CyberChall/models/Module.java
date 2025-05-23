@@ -13,6 +13,8 @@ public class Module {
 
     private String nom;
     
+    private String image;
+    
     //lien de redirection vers le module en particulier (page de détails : base + quizz)
     private String description;
     
@@ -22,11 +24,12 @@ public class Module {
     // 🛠️ Constructeurs
     public Module() {}
 
-	public Module(Long id, String nom, String description, List<SousModule> sousModules) {
+	public Module(Long id, String nom, String image, String description, List<SousModule> sousModules) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.description = description;
+		this.image = image;
 		this.sousModules = sousModules;
 	}
 
@@ -58,6 +61,14 @@ public class Module {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public List<SousModule> getSousModules() {
